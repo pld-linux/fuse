@@ -5,9 +5,6 @@
 %bcond_without fb	# do not build framebuffer version
 %bcond_without sdl	# do not build SDL version
 #
-%ifnarch %{ix86} alpha ppc
-%undefine	with_svga
-%endif
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
