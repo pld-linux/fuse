@@ -4,7 +4,10 @@
 %bcond_without x	# do not build X11 version
 %bcond_without fb	# do not build framebuffer version
 %bcond_without sdl	# do not build SDL version
-
+#
+%ifnarch %{ix86} alpha ppc
+%undefine	with_svga
+%endif
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
@@ -15,19 +18,17 @@ Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	4195399aaa3a471ea64606f5eb10c6f8
 URL:		http://fuse-emulator.sourceforge.net/
-%{!?_without_sdl:BuildRequires:	SDL-devel}
+%{?with_sdl:BuildRequires:	SDL-devel}
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{!?_without_x:BuildRequires:	gtk+-devel}
+%{?with_x:BuildRequires:	gtk+-devel}
 BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= 0.2.1
 BuildRequires:	libxml2-devel
 BuildRequires:	perl
-%ifarch %{ix86} alpha ppc
-%{!?_without_svga:BuildRequires:	svgalib-devel}
-%endif
+%{?with_svga:BuildRequires:	svgalib-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -82,7 +83,7 @@ W tym pakiecie znajduj± siê wspólne pliki dla wszystkich wersji.
 Summary:	Free Unix Spectrum Emulator (framebuffer version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
 Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description fb
 fuse is Free Unix Spectrum Emulator.
@@ -112,7 +113,7 @@ framebuffera.
 Summary:	Free Unix Spectrum Emulator (SDL version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
 Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description sdl
 fuse is Free Unix Spectrum Emulator.
@@ -141,7 +142,7 @@ W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z SDL.
 Summary:	Free Unix Spectrum Emulator (svga version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
 Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description svga
 fuse is Free Unix Spectrum Emulator.
@@ -170,7 +171,7 @@ W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z svgalib.
 Summary:	Free Unix Spectrum Emulator (X11 version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
 Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}
+Requires:	%{name}-common = %{version}-%{release}
 
 %description X11
 fuse is Free Unix Spectrum Emulator.
@@ -200,14 +201,13 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 touch ui/sdl/sdljoystick.h
 
 %build
-#rm -f missing
 %{__aclocal}
 %{__autoheader}
 %{__autoconf}
 %{__automake}
 
 # X11
-%if %{!?_without_x:1}0
+%if %{with x}
 %configure  \
 	--disable-ui-joystick \
 	--with-joystick \
@@ -218,7 +218,7 @@ cp -f ./fuse ./fuse-x11
 %endif
 
 # SDL
-%if %{!?_without_sdl:1}0
+%if %{with sdl}
 %configure \
 	--disable-ui-joystick \
 	--with-joystick \
@@ -229,8 +229,7 @@ cp -f ./fuse ./fuse-sdl
 %endif
 
 # svga
-%ifarch %{ix86} alpha ppc
-%if %{!?_without_svga:1}0
+%if %{with svga}
 %configure \
 	--disable-ui-joystick \
 	--with-joystick \
@@ -239,10 +238,9 @@ cp -f ./fuse ./fuse-sdl
 %{__make}
 cp -f ./fuse ./fuse-svga
 %endif
-%endif
 
 # framebuffer
-%if %{!?_without_fb:1}0
+%if %{with fb}
 %configure \
 	--with-joystick \
 	--with-fb
@@ -257,12 +255,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%ifarch %{ix86} alpha ppc
-%{!?_without_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
-%endif
-%{!?_without_x:install fuse-x11		$RPM_BUILD_ROOT%{_bindir}}
-%{!?_without_fb:install fuse-fb		$RPM_BUILD_ROOT%{_bindir}}
-%{!?_without_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
+%{?with_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
+%{?with_x:install fuse-x11		$RPM_BUILD_ROOT%{_bindir}}
+%{?with_fb:install fuse-fb		$RPM_BUILD_ROOT%{_bindir}}
+%{?with_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -273,27 +269,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}
 %{_mandir}/man1/*
 
-%if %{!?_without_fb:1}0
+%if %{with fb}
 %files fb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-fb
 %endif
 
-%if %{!?_without_sdl:1}0
+%if %{with sdl}
 %files sdl
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-sdl
 %endif
 
-%ifarch %{ix86} alpha ppc
-%if %{!?_without_svga:1}0
+%if %{with svga}
 %files svga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-svga
 %endif
-%endif
 
-%if %{!?_without_x:1}0
+%if %{with x}
 %files X11
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-x11
