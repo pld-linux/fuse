@@ -2,7 +2,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.4.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Emulators
 Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{version}.tar.gz
@@ -67,7 +67,6 @@ Summary:	Free Unix Spectrum Emulator (svga version)
 Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum (wersja na svgalib)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}
-ExclusiveArch:	%{ix86} ppc
 
 %description svga
 fuse is Free Unix Spectrum Emulator.
@@ -164,9 +163,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/*
 %{_mandir}/man1/*
 
+%ifarch %{ix86} alpha ppc
 %files svga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-svga
+%endif
 
 %files X11
 %defattr(644,root,root,755)
