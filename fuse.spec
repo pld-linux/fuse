@@ -15,7 +15,7 @@ Version:	0.6.2.1
 Release:	1
 License:	GPL
 Group:		Applications/Emulators
-Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{version}.tar.gz
 # Source0-md5:	4ce5c01fb922acb695c7229e765d0f6b
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel}
