@@ -1,27 +1,28 @@
 #
 # Conditional build:
-# _without_svga	- don't build svgalib version
-# _without_x	- don't build X11 version
-# _without_fb	- don't build framebuffer version
-# _without_sdl	- don't build SDL version
-#
+%bcond_without svga	# do not build svgalib version
+%bcond_without x	# do not build X11 version
+%bcond_without fb	# do not build framebuffer version
+%bcond_without sdl	# do not build SDL version
+
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.6.0
+Version:	0.6.2
 Release:	1
 License:	GPL
 Group:		Applications/Emulators
-Source0:	http://www.srcf.ucam.org/~pak21/spectrum/%{name}-%{version}.tar.gz
-# Source0-md5:	6e8b1f31296b498332ab871dbdc378c6
-URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
+Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
+# Source0-md5:	4195399aaa3a471ea64606f5eb10c6f8
+URL:		http://fuse-emulator.sourceforge.net/
 %{!?_without_sdl:BuildRequires:	SDL-devel}
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{!?_without_x:BuildRequires:	gtk+-devel}
 BuildRequires:	lib765-devel
+BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libspectrum-devel >= 0.1.1
+BuildRequires:	libspectrum-devel >= 0.2.1
 BuildRequires:	libxml2-devel
 BuildRequires:	perl
 %ifarch %{ix86} alpha ppc
@@ -196,6 +197,7 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 
 %prep
 %setup -q
+touch ui/sdl/sdljoystick.h
 
 %build
 #rm -f missing
@@ -207,6 +209,8 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 # X11
 %if %{!?_without_x:1}0
 %configure  \
+	--disable-ui-joystick \
+	--with-joystick \
 	--with-gtk
 %{__make} clean
 %{__make}
@@ -216,6 +220,8 @@ cp -f ./fuse ./fuse-x11
 # SDL
 %if %{!?_without_sdl:1}0
 %configure \
+	--disable-ui-joystick \
+	--with-joystick \
 	--with-sdl
 %{__make} clean
 %{__make}
@@ -226,6 +232,8 @@ cp -f ./fuse ./fuse-sdl
 %ifarch %{ix86} alpha ppc
 %if %{!?_without_svga:1}0
 %configure \
+	--disable-ui-joystick \
+	--with-joystick \
 	--with-svgalib
 %{__make} clean
 %{__make}
@@ -236,6 +244,7 @@ cp -f ./fuse ./fuse-svga
 # framebuffer
 %if %{!?_without_fb:1}0
 %configure \
+	--with-joystick \
 	--with-fb
 %{__make} clean
 %{__make}
