@@ -1,14 +1,16 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.5.0
-Release:	3
+Version:	0.5.1
+Release:	1
 License:	GPL
 Group:		Applications/Emulators
 Source0:	http://www.srcf.ucam.org/~pak21/spectrum/%{name}-%{version}.tar.gz
+Patch0:		%{name}-typo.patch
 URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	libspectrum-devel
 BuildRequires:	glib-devel
 BuildRequires:	perl
 %ifarch %{ix86} alpha ppc
@@ -63,6 +65,35 @@ Jego w³a¶ciwo¶ci to:
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajduj± siê wspólne pliki dla wersji X11 i svga.
+
+%package fb
+Summary:	Free Unix Spectrum Emulator (framebuffer version)
+Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum (wersja na framebuffer)
+Group:		Applications/Emulators
+Requires:	%{name}-common = %{version}
+
+%description fb
+fuse is Free Unix Spectrum Emulator.
+What Fuse does have:
+
+* Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
+  speed on any computer you're likely to try it on (it runs at full
+  speed on a SparcStation 4 unless you do too much graphics intensive
+  stuff).
+* Support for loading from .tzx files.
+* Sound.
+
+This package contains files for framebuffer version.
+
+%description fb -l pl
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
+Jego w³a¶ciwo¶ci to:
+
+* Emulacja ZX Spectrum 48K/128K/+2/+2A.
+* Mo¿liwo¶æ ³adowania programów z plików .tzx.
+* D¼wiêk.
+
+W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z framebuffera. 
 
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
@@ -124,6 +155,7 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 rm -f missing
@@ -145,12 +177,21 @@ cp -f ./fuse ./fuse-x11
 %{__make} clean
 %configure \
 	--without-x \
-	--without-glib \
+	--with-glib \
 	--without-fb \
 	--with-svgalib
-%{__make}
+%{__make} CFLAGS="-I/usr/include/glib-1.2 -I/usr/lib/glib/include %{rpmcflags}"
 cp -f ./fuse ./fuse-svga
 %endif
+
+%{__make} clean
+%configure \
+	--without-x \
+	--with-glib \
+	--with-fb \
+	--without-svgalib
+%{__make} CFLAGS="-I/usr/include/glib-1.2 -I/usr/lib/glib/include %{rpmcflags}"
+cp -f ./fuse ./fuse-fb
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -162,6 +203,7 @@ install -d $RPM_BUILD_ROOT%{_xbindir}
 install fuse-svga $RPM_BUILD_ROOT%{_bindir}
 %endif
 install fuse-x11 $RPM_BUILD_ROOT%{_xbindir}
+install fuse-fb  $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -170,9 +212,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/* 
 %dir %{_datadir}/%{name}
-%attr(755,root,root) %{_bindir}/tzxlist
 %{_datadir}/%{name}/*
 %{_mandir}/man1/*
+
+%files fb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fuse-fb
 
 %ifarch %{ix86} alpha ppc
 %files svga
