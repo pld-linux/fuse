@@ -126,10 +126,11 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 %setup -q
 
 %build
-# version for X11
+rm -f missing
 %{__aclocal}
 %{__autoconf}
 %{__automake}
+# version for X11
 %configure  \
 	--with-x \
 	--with-glib \
