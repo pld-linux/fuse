@@ -1,0 +1,238 @@
+--- display.c.orig	Tue Jan 28 08:43:52 2003
++++ display.c	Tue Jan 28 14:52:42 2003
+@@ -111,20 +111,9 @@
+ 
+ static WORD display_get_addr(int x, int y)
+ {
+-  switch( scld_screenmode )
+-  {
+-    case HIRES:
+-      return display_line_start[y]+x;
+-      break;
+-    case ALTDFILE:  /* Same as standard, but base at 0x6000 */
+-      return display_line_start[y]+x+ALTDFILE_OFFSET;
+-      break;
+-    case EXTCOLOUR:
+-    default:  /* Standard Speccy screen */
+-      return display_line_start[y]+x;
+-      break;
+-  }
+-
++  if (scld_altdfile) {
++    return display_line_start[y]+x+ALTDFILE_OFFSET;
++  } else return display_line_start[y]+x;
+   ui_error( UI_ERROR_ERROR, "Impossible screenmode `%d'", scld_screenmode );
+   fuse_abort();
+ }
+@@ -206,7 +195,7 @@
+ {
+ 
+   int x, screen_y, redraw, colour;
+-  BYTE data, ink, paper;
++  BYTE data, data2, ink, paper;
+   WORD hires_data;
+ 
+   redraw = 0;
+@@ -227,20 +216,32 @@
+ 	   display_is_dirty[screen_y] >>= 1, x++ ) {
+ 
+ 	/* Skip to next 8 pixel chunk if this chunk is clean */
+-	if( ! ( display_is_dirty[screen_y] & 0x01 ) ) continue;
+-
+-	data = read_screen_memory( display_get_addr( x, screen_y ) );
+-	display_get_attr( x, screen_y, &ink, &paper );
++	    if( ! ( display_is_dirty[screen_y] & 0x01 ) ) continue;
+ 
+-	if( scld_hires ) {
+-	  hires_data = (data<<8) +
+-	    read_screen_memory( display_get_addr( x, screen_y ) +
+-				ALTDFILE_OFFSET
+-			      );
+-
+-	  display_plot16( x<<1, screen_y, hires_data, ink, paper );
+-	} else
+-	  display_plot8( x<<1, screen_y, data, ink, paper );
++        display_get_attr( x, screen_y, &ink, &paper );
++        data = read_screen_memory( display_get_addr( x, screen_y ) );
++        if (scld_hires) {
++          switch (scld_screenmode) {
++            case 4:
++              data2 = read_screen_memory( display_attr_start[screen_y] + x);
++              break;
++            case 5:
++              data2 = read_screen_memory( display_attr_start[screen_y] + x + ALTDFILE_OFFSET);
++              break;
++            case 6:
++              data2 = read_screen_memory( display_get_addr( x, screen_y ) + ALTDFILE_OFFSET);
++              break;
++            case 7:
++              data2 = data;
++              break;
++            default:
++              break;
++          }
++          hires_data = (data << 8) + data2;
++	      display_plot16( x<<1, screen_y, hires_data, ink, paper );    
++        } else {
++	        display_plot8( x<<1, screen_y, data, ink, paper );
++        }    
+       }
+ 
+       /* Need to redraw this line */
+@@ -299,35 +300,43 @@
+    `address'; 0x4000 <= address < 0x5b00 */
+ void display_dirty( WORD address )
+ {
+-  switch( scld_screenmode )
+-  {
+-    case ALTDFILE:  /* Same as standard, but base at 0x6000 */
++  switch (scld_screenmode) {
++    case 0: /* standard Speccy screen */
++    case 4: /* strange mode */
++      if(address>=0x5b00)
++        return;
++      if(address<0x5800) {		/* 0x5800 = first attributes byte */
++        display_dirty8(address);
++      } else {
++        display_dirty64(address);
++      }
++      break;
++    case 1: /* second screen */
++    case 5: /* strange mode using second screen */      
+       if( address >= 0x7b00 )
+         return;
+-      if( address < 0x7800 ) {		/* 0x7800 = first attributes byte */
++      if( address >= 0x6000 && address < 0x7800 ) {		/* 0x7800 = first attributes byte */
+         display_dirty8(address-ALTDFILE_OFFSET);
+       } else {
+         display_dirty64(address-ALTDFILE_OFFSET);
+       }
+       break;
+ 
+-    case HIRES:
+-    case EXTCOLOUR:
++    case 2: /* extended colours */
++    case 6: /* hires mode */     
+       if((address>=0x7800) || ((address>=0x5800) && (address<0x6000)))
+         return;
+       if(address>=0x6000) address-=ALTDFILE_OFFSET;
+       display_dirty8(address);
+       break;
+-    
+-    default:  /* Standard Speccy screen */
+-      if(address>=0x5b00)
+-        return;
+-      if(address<0x5800) {		/* 0x5800 = first attributes byte */
+-        display_dirty8(address);
+-      } else {
+-        display_dirty64(address);
++    case 3: /* extended colours, but attributes and data taken from second screen */
++    case 7: /* hires mode, but data taken only from second screen */
++      if( address >= 0x6000 && address < 0x7800 ) {		/* 0x7800 = first attributes byte */
++        display_dirty8(address-ALTDFILE_OFFSET);
+       }
+       break;
++    default:
++      break;
+   }
+ }
+ 
+@@ -408,23 +417,16 @@
+ {
+   BYTE attr;
+ 
+-  switch( scld_screenmode )
+-  {
+-    case ALTDFILE:  /* Same as standard, but base at 0x6000 */
+-      attr=read_screen_memory(display_attr_start[y]+x+ALTDFILE_OFFSET);
+-      break;
+-    case EXTCOLOUR:
+-      attr=read_screen_memory(display_line_start[y]+x+ALTDFILE_OFFSET);
+-      break;
+-    case HIRES:
+-    case (HIRES|EXTCOLOUR):
+-      attr=hires_get_attr();
+-      break;
+-    default: /* Standard Speccy screen */
+-      attr=read_screen_memory(display_attr_start[y]+x);
+-      break;
+-  }
++  if (scld_hires) {
++    attr = hires_get_attr();
++  } else {
++    if (scld_extcolour) {
++      attr = read_screen_memory(display_line_start[y]+x+ALTDFILE_OFFSET);
++    } else if (scld_altdfile) {
++        attr = read_screen_memory(display_attr_start[y]+x+ALTDFILE_OFFSET);
++    } else attr = read_screen_memory(display_attr_start[y]+x);
+ 
++  }
+   display_parse_attr(attr,ink,paper);
+ }
+ 
+@@ -571,32 +573,27 @@
+ static void display_dirty_flashing(void)
+ {
+   int offset; BYTE attr;
+-
+-  switch (scld_screenmode)
+-  {
+-    case ALTDFILE:  /* Same as standard, but base at 0x6000 */
+-      for(offset=0x3800;offset<0x3b00;offset++) {
+-        attr=read_screen_memory(offset);
+-        if( attr & 0x80 )
+-          display_dirty64(offset+ALTDFILE_OFFSET);
+-      }
+-      break;
+-    case EXTCOLOUR:
++  
++  if (!scld_hires) {
++    if (scld_extcolour) {
+       for(offset=ALTDFILE_OFFSET;offset<0x3800;offset++) {
+         attr=read_screen_memory(offset);
+         if( attr & 0x80 )
+-          display_dirty8(offset-ALTDFILE_OFFSET);
++          display_dirty8(offset+ALTDFILE_OFFSET);
+       }
+-      break;
+-    case HIRES:
+-      break;
+-    default:  /* Standard Speccy screen */
+-      for(offset=0x1800;offset<0x1b00;offset++) {
+-        attr=read_screen_memory(offset);
+-        if( attr & 0x80 )
+-          display_dirty64(offset+0x4000);
++    } else if (scld_altdfile) {
++        for(offset=0x3800;offset<0x3b00;offset++) {
++          attr=read_screen_memory(offset);
++          if( attr & 0x80 )
++            display_dirty64(offset+ALTDFILE_OFFSET);
++        }
++      } else { /* Standard Speccy screen */
++          for(offset=0x1800;offset<0x1b00;offset++) {
++            attr=read_screen_memory(offset);
++            if( attr & 0x80 )
++              display_dirty64(offset+0x4000);
++          }
+       }
+-      break;
+   }
+ }
+ 
+@@ -610,16 +607,6 @@
+   }
+ 
+   for(y=0;y<DISPLAY_HEIGHT;y++) {
+-    for(x=0;x<DISPLAY_WIDTH_COLS;x++) {
+-      display_get_attr(x,y,&ink,&paper);
+-	if( scld_hires ) {
+-	  hires_data = (read_screen_memory( display_get_addr(x,y) ) << 8 ) +
+-	    read_screen_memory( display_get_addr( x, y ) + ALTDFILE_OFFSET );
+-	  display_plot16( x<<1, y, hires_data, ink, paper );
+-	} else
+-	  display_plot8( x<<1, y, read_screen_memory( display_get_addr(x,y) ),
+-			 ink, paper );
+-    }
+     display_is_dirty[y] = display_all_dirty;	/* Marks all pixels as dirty */
+   }
+ }
