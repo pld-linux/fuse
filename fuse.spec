@@ -1,7 +1,7 @@
 #
 # Conditional build:
 # _without_svga	- don't build svgalib version
-# _without_x11	- don't build X11 version
+# _without_x	- don't build X11 version
 # _without_fb	- don't build framebuffer version
 # _without_sdl	- don't build SDL version
 #
@@ -18,7 +18,7 @@ URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
 %{!?_without_sdl:BuildRequires:	SDL-devel}
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{!?_without_x11:BuildRequires:	gtk+-devel}
+%{!?_without_x:BuildRequires:	gtk+-devel}
 BuildRequires:	lib765-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= 0.1.1
@@ -205,7 +205,7 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 %{__automake}
 
 # X11
-%if %{!?_without_x11:1}0
+%if %{!?_without_x:1}0
 %configure  \
 	--with-gtk
 %{__make} clean
@@ -251,8 +251,8 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch %{ix86} alpha ppc
 %{!?_without_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
 %endif
-%{!?_without_x11:install fuse-x11	$RPM_BUILD_ROOT%{_bindir}}
-%{!?_without_fb:install  fuse-fb	$RPM_BUILD_ROOT%{_bindir}}
+%{!?_without_x:install fuse-x11		$RPM_BUILD_ROOT%{_bindir}}
+%{!?_without_fb:install fuse-fb		$RPM_BUILD_ROOT%{_bindir}}
 %{!?_without_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
 
 %clean
@@ -284,7 +284,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %endif
 
-%if %{!?_without_x11:1}0
+%if %{!?_without_x:1}0
 %files X11
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-x11
