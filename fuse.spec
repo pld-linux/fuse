@@ -8,22 +8,22 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.6.2.1
+Version:	0.7.0
 Release:	1
 License:	GPL
 Group:		Applications/Emulators
 Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{version}.tar.gz
-# Source0-md5:	4ce5c01fb922acb695c7229e765d0f6b
+# Source0-md5:	d81ad260cd6a8dd533af01ee6a5f9527
 URL:		http://fuse-emulator.sourceforge.net/
-%{?with_sdl:BuildRequires:	SDL-devel}
+%{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{?with_x:BuildRequires:	gtk+-devel}
+%{?with_x:BuildRequires:	gtk+2-devel >= 2.0.0}
 BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= 0.2.1
-BuildRequires:	libxml2-devel
+BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl
 %{?with_svga:BuildRequires:	svgalib-devel}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -111,6 +111,7 @@ Summary:	Free Unix Spectrum Emulator (SDL version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
+Requires:	SDL >= 1.2.4
 
 %description sdl
 fuse is Free Unix Spectrum Emulator.
