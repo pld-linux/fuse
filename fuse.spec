@@ -105,7 +105,7 @@ Jego w³a¶ciwo¶ci to:
 * D¼wiêk.
 
 W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z
-framebuffera. 
+framebuffera.
 
 %package sdl
 Summary:	Free Unix Spectrum Emulator (SDL version)
@@ -134,7 +134,7 @@ Jego w³a¶ciwo¶ci to:
 * Mo¿liwo¶æ ³adowania programów z plików .tzx.
 * D¼wiêk.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z SDL. 
+W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z SDL.
 
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
@@ -163,7 +163,7 @@ Jego w³a¶ciwo¶ci to:
 * Mo¿liwo¶æ ³adowania programów z plików .tzx.
 * D¼wiêk.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z svgalib. 
+W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z svgalib.
 
 %package X11
 Summary:	Free Unix Spectrum Emulator (X11 version)
@@ -260,7 +260,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(644,root,root,755)
-%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/* 
+%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/*
 %{_datadir}/%{name}
 %{_mandir}/man1/*
 
