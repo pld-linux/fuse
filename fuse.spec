@@ -14,6 +14,7 @@ Group:		Applications/Emulators
 Source0:	http://www.srcf.ucam.org/~pak21/spectrum/%{name}-%{version}.tar.gz
 # Source0-md5:	6e8b1f31296b498332ab871dbdc378c6
 URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
+%{!?_without_sdl:BuildRequires:	SDL-devel}
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{!?_without_x11:BuildRequires:	gtk+-devel}
@@ -22,7 +23,6 @@ BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= 0.1.1
 BuildRequires:	libxml2-devel
 BuildRequires:	perl
-%{!?_without_sdl:BuildRequires:	SDL-devel}
 %ifarch %{ix86} alpha ppc
 %{!?_without_svga:BuildRequires:	svgalib-devel}
 %endif
@@ -253,7 +253,8 @@ cp -f ./fuse ./fuse-fb
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %ifarch %{ix86} alpha ppc
 %{!?_without_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
