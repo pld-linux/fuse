@@ -1,9 +1,10 @@
+#
 # Conditional build:
-# _without_svga - don't build svgalib version
-# _without_x11 - don't build X11 version
-# _without_fb - don't build framebuffer version
-# _without_sdl - don't build SDL version
-
+# _without_svga	- don't build svgalib version
+# _without_x11	- don't build X11 version
+# _without_fb	- don't build framebuffer version
+# _without_sdl	- don't build SDL version
+#
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
@@ -63,7 +64,7 @@ What Fuse does have:
 * Support for loading from .tzx files.
 * Sound.
 
-This package contains common files for X11 and svga version.
+This package contains common files for all versions.
 
 %description common -l pl
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
@@ -74,9 +75,8 @@ Jego w³a¶ciwo¶ci to:
 * D¼wiêk.
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
-W tym pakiecie znajduj± siê wspólne pliki dla wersji X11 i svga.
+W tym pakiecie znajduj± siê wspólne pliki dla wszystkich wersji.
 
-%if %{!?_without_fb:1}0
 %package fb
 Summary:	Free Unix Spectrum Emulator (framebuffer version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
@@ -104,10 +104,9 @@ Jego w³a¶ciwo¶ci to:
 * Mo¿liwo¶æ ³adowania programów z plików .tzx.
 * D¼wiêk.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z framebuffera. 
-%endif
+W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z
+framebuffera. 
 
-%if %{!?_without_sdl:1}0
 %package sdl
 Summary:	Free Unix Spectrum Emulator (SDL version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
@@ -137,9 +136,6 @@ Jego w³a¶ciwo¶ci to:
 
 W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z SDL. 
 
-%endif
-
-%if %{!?_without_svga:1}0
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
@@ -169,9 +165,6 @@ Jego w³a¶ciwo¶ci to:
 
 W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z svgalib. 
 
-%endif
-
-%if %{!?_without_x11:1}0
 %package X11
 Summary:	Free Unix Spectrum Emulator (X11 version)
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
@@ -201,13 +194,11 @@ Jego w³a¶ciwo¶ci to:
 
 W tym pakiecie znajduj± siê pliki dla wersji X11.
 
-%endif
-
 %prep
 %setup -q
 
 %build
-rm -f missing
+#rm -f missing
 %{__aclocal}
 %{__autoheader}
 %{__autoconf}
@@ -253,6 +244,7 @@ cp -f ./fuse ./fuse-fb
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -269,8 +261,7 @@ rm -rf $RPM_BUILD_ROOT
 %files common
 %defattr(644,root,root,755)
 %doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/* 
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/*
+%{_datadir}/%{name}
 %{_mandir}/man1/*
 
 %if %{!?_without_fb:1}0
