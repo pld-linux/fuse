@@ -18,7 +18,7 @@ URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
 BuildRequires:	autoconf
 BuildRequires:	automake
-%{?with_x:BuildRequires:	gtk+2-devel >= 2.0.0}
+%{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
 BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
