@@ -1,12 +1,14 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.4.2
+Version:	0.5.0
 Release:	2
 License:	GPL
 Group:		Applications/Emulators
-Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{version}.tar.gz
+Source0:	http://www.srcf.ucam.org/~pak21/spectrum/%{name}-%{version}.tar.gz
 URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	glib-devel
 BuildRequires:	perl
 %ifarch %{ix86} alpha ppc
@@ -125,9 +127,14 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 
 %build
 # version for X11
-%configure2_13 --with-glib \
-	    --without-svgalib \
-	    --without-fb
+%{__aclocal}
+%{__autoconf}
+%{__automake}
+%configure  \
+	--with-x \
+	--with-glib \
+	--without-svgalib \
+	--without-fb
 %{__make} clean
 %{__make}
 cp -f ./fuse ./fuse-x11
@@ -135,10 +142,11 @@ cp -f ./fuse ./fuse-x11
 #version for svga
 %ifarch %{ix86} alpha ppc
 %{__make} clean
-%configure2_13 --without-x \
-	    --without-glib \
-	    --without-fb \
-	    --with-svgalib
+%configure \
+	--without-x \
+	--without-glib \
+	--without-fb \
+	--with-svgalib
 %{__make}
 cp -f ./fuse ./fuse-svga
 %endif
