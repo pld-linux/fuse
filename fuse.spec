@@ -9,7 +9,7 @@ Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{ver
 URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
 BuildRequires:	glib-devel
 BuildRequires:	perl
-%ifarch %{ix86} ppc
+%ifarch %{ix86} alpha ppc
 BuildRequires:	svgalib-devel
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,7 +51,7 @@ What Fuse does have:
 
 This package contains common files for X11 and svga version.
 
-%description -l pl common
+%description common -l pl
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
 Jego w³a¶ciwo¶ci to:
 
@@ -82,7 +82,7 @@ What Fuse does have:
 
 This package contains files for svga version.
 
-%description -l pl svga
+%description svga -l pl
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
 Jego w³a¶ciwo¶ci to:
 
@@ -111,7 +111,7 @@ What Fuse does have:
 
 This package contains files for X11 version.
 
-%description -l pl X11
+%description X11 -l pl
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
 Jego w³a¶ciwo¶ci to:
 
@@ -134,7 +134,7 @@ W tym pakiecie znajduj± siê pliki dla wersji X11.
 cp -f ./fuse ./fuse-x11
 
 #version for svga
-%ifarch %{ix86} ppc
+%ifarch %{ix86} alpha ppc
 %{__make} clean
 %configure2_13 --without-x \
 	    --without-glib \
@@ -150,10 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_xbindir}
 
-cp fuse-svga $RPM_BUILD_ROOT%{_bindir}/
-cp fuse-x11 $RPM_BUILD_ROOT%{_xbindir}/
-
-#gzip -9nf README THANKS AUTHORS hacking/ui.txt
+install fuse-svga $RPM_BUILD_ROOT%{_bindir}
+install fuse-x11 $RPM_BUILD_ROOT%{_xbindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
