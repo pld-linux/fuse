@@ -195,14 +195,12 @@ cp -f ./fuse ./fuse-fb
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%define _xbindir /usr/X11R6/bin
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_xbindir}
 
 %ifarch %{ix86} alpha ppc
 install fuse-svga $RPM_BUILD_ROOT%{_bindir}
 %endif
-install fuse-x11 $RPM_BUILD_ROOT%{_xbindir}
+install fuse-x11 $RPM_BUILD_ROOT%{_bindir}
 install fuse-fb  $RPM_BUILD_ROOT%{_bindir}
 
 %clean
@@ -227,4 +225,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files X11
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_xbindir}/fuse-x11
+%attr(755,root,root) %{_bindir}/fuse-x11
