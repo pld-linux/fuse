@@ -11,11 +11,11 @@ URL:		http://www.srcf.ucam.org/~pak21/spectrum/fuse.html
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libspectrum-devel
-BuildRequires:	glib-devel
 BuildRequires:	perl
 %ifarch %{ix86} alpha ppc
 BuildRequires:	svgalib-devel
 %endif
+BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
