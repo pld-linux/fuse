@@ -2,7 +2,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl):	"Wolny" uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.5.0
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Emulators
 Source0:	http://www.srcf.ucam.org/~pak21/spectrum/%{name}-%{version}.tar.gz
@@ -158,7 +158,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_xbindir}
 
+%ifarch %{ix86} alpha ppc
 install fuse-svga $RPM_BUILD_ROOT%{_bindir}
+%endif
 install fuse-x11 $RPM_BUILD_ROOT%{_xbindir}
 
 %clean
