@@ -1,0 +1,11 @@
+--- fuse-0.5.1/ui/svga/svgakeyboard.c.orig	Mon Dec  9 18:11:22 2002
++++ fuse-0.5.1/ui/svga/svgakeyboard.c	Mon Dec  9 18:11:40 2002
+@@ -71,7 +71,7 @@
+   if( ptr ) {
+ 
+     if( widget_level >= 0 ) {
+-      widget_keyhandler( ptr->key1, ptr2->key2 );
++      widget_keyhandler( ptr->key1, ptr->key2 );
+     } else {
+       if(ptr->key1 != KEYBOARD_NONE) keyboard_press(ptr->key1);
+       if(ptr->key2 != KEYBOARD_NONE) keyboard_press(ptr->key2);
