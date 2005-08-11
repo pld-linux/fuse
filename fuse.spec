@@ -1,9 +1,9 @@
 #
 # Conditional build:
-%bcond_without svga	# do not build svgalib version
-%bcond_without x	# do not build X11 version
-%bcond_without fb	# do not build framebuffer version
-%bcond_without sdl	# do not build SDL version
+%bcond_without	svga	# do not build svgalib version
+%bcond_without	x	# do not build X11 version
+%bcond_without	fb	# do not build framebuffer version
+%bcond_without	sdl	# do not build SDL version
 #
 Summary:	Free Unix Spectrum Emulator
 Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
