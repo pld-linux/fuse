@@ -1,0 +1,141 @@
+--- fuse-0.7.0/ui/fb/fbdisplay.c.old	2006-02-07 16:18:39.972426000 +0100
++++ fuse-0.7.0/ui/fb/fbdisplay.c	2006-02-07 18:10:34.560061500 +0100
+@@ -72,7 +72,7 @@
+ };
+ 
+ static int fb_fd = -1;		/* The framebuffer's file descriptor */
+-static libspectrum_word *image = 0, *gm = 0;
++static libspectrum_byte *image = 0, *gm = 0;
+ 
+ static struct fb_fix_screeninfo fixed;
+ static struct fb_var_screeninfo orig_display, display;
+@@ -97,6 +97,21 @@
+   { 0 }
+ };
+ 
++static __u16 red[16], green[16], blue[16], transp[16];
++static __u16 zx_red[16] = {
++0, 0, 0xC000, 0xC000, 0, 0, 0xC000, 0xC000,
++0, 0, 0xFFFF, 0xFFFF, 0, 0, 0xFFFF, 0xFFFF};
++
++static __u16 zx_green[16] = {
++0, 0, 0, 0, 0xC000, 0xC000, 0xC000, 0xC000,
++0, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
++
++static __u16 zx_blue[16] = {
++0, 0xC000, 0, 0xC000, 0, 0xC000, 0, 0xC000,
++0, 0xFFFF, 0, 0xFFFF, 0, 0xFFFF, 0, 0xFFFF};
++
++static struct fb_cmap orig_cmap, cmap;
++
+ static int fb_set_mode( void );
+ 
+ int uidisplay_init( int width, int height )
+@@ -132,8 +147,16 @@
+     fprintf( stderr, "%s: couldn't open framebuffer device\n", fuse_progname );
+     return 1;
+   }
++  orig_cmap.start = 0;
++  orig_cmap.len = 16;
++  orig_cmap.red = red;
++  orig_cmap.green = green;
++  orig_cmap.blue = blue;
++  orig_cmap.transp = transp;
++  
+   if( ioctl( fb_fd, FBIOGET_FSCREENINFO, &fixed )        ||
+-      ioctl( fb_fd, FBIOGET_VSCREENINFO, &orig_display )    ) {
++      ioctl( fb_fd, FBIOGET_VSCREENINFO, &orig_display ) ||
++      ioctl( fb_fd, FBIOGETCMAP, &orig_cmap)) {
+     fprintf( stderr, "%s: couldn't read framebuffer device info\n",
+ 	     fuse_progname );
+     return 1;
+@@ -171,7 +194,7 @@
+   if( fb_modes[index].doublescan ) display.vmode |= FB_VMODE_DOUBLE;
+   
+   display.xoffset = display.yoffset = 0;
+-  display.bits_per_pixel = 16;
++  display.bits_per_pixel = 8;
+   display.red.length = display.blue.length = 5;
+   display.green.length = 6;
+   
+@@ -201,8 +224,15 @@
+ 
+   fputs( "\x1B[H\x1B[J", stdout );	/* clear tty */
+   memset( gm, 0, display.xres_virtual * display.yres_virtual * 2 );
++  cmap.start = 0;
++  cmap.len = 16;
++  cmap.red = zx_red;
++  cmap.green = zx_green;
++  cmap.blue = zx_blue;
++  cmap.transp = transp;
+ 
+-  if( ioctl( fb_fd, FBIOPUT_VSCREENINFO, &display ) ) {
++  if( ioctl( fb_fd, FBIOPUT_VSCREENINFO, &display ) ||
++      ioctl( fb_fd, FBIOPUTCMAP, &cmap)) {
+     free( image ); munmap( gm, fixed.smem_len );
+     return 1;
+   }
+@@ -263,14 +293,14 @@
+     for( y = start; y < start + height; y++ )
+     {
+       int i;
+-      libspectrum_word *point;
++      libspectrum_byte *point;
+ 
+       if( hires ) {
+ 
+ 	for( i = 0, point = gm + y * display.xres_virtual + x;
+ 	     i < width;
+ 	     i++, point++ )
+-	  *point = colours[display_image[y][x+i]];
++	*point = display_image[y][x+i];
+ 
+       } else {
+ 
+@@ -279,7 +309,7 @@
+ 	     i++, point += 2 )
+ 	  *  point       = *( point +     display.xres_virtual ) =
+ 	  *( point + 1 ) = *( point + 1 + display.xres_virtual ) = 
+-	    colours[display_image[y][x+i]];
++	    display_image[y][x+i];
+ 
+       }
+     }
+@@ -296,14 +326,14 @@
+ 	for ( i = 0, point = gm + y * display.xres_virtual + x;
+ 	      i < width;
+ 	      i++, point++ )
+-	  *point = colours[display_image[y*2][x+i]];
++	  *point = display_image[y*2][x+i];
+ 
+       } else {
+ 
+ 	for( i = 0, point = gm + 2 * y * display.xres_virtual + x * 2;
+ 	     i < width;
+ 	     i++, point+=2 )
+-	  *point = *(point+1) = colours[display_image[y][x+i]];
++	  *point = *(point+1) = display_image[y][x+i];
+ 
+       }
+     }
+@@ -318,7 +348,7 @@
+       for( i = 0, point = gm + y * display.xres_virtual + x;
+ 	   i < width;
+ 	   i++, point++ )
+-        *point = colours[display_image[y][x+i]];
++         *point = display_image[y][x+i];
+ 
+     }
+     break;
+@@ -338,7 +368,10 @@
+ fbdisplay_end( void )
+ {
+   if( fb_fd != -1 ) {
+-    if( got_orig_display ) ioctl( fb_fd, FBIOPUT_VSCREENINFO, &orig_display );
++    if( got_orig_display ) {
++    	ioctl( fb_fd, FBIOPUTCMAP, &orig_cmap);
++    	ioctl( fb_fd, FBIOPUT_VSCREENINFO, &orig_display );
++    }
+     close( fb_fd );
+     fb_fd = -1;
+ 
