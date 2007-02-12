@@ -6,7 +6,7 @@
 %bcond_without	sdl	# do not build SDL version
 #
 Summary:	Free Unix Spectrum Emulator
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.7.0
 Release:	2
@@ -41,17 +41,17 @@ What Fuse does have:
 * Support for loading from .tzx files.
 * Sound emulation.
 
-%description -l pl
+%description -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 
 %package common
 Summary:	Free Unix Spectrum Emulator (common files)
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (pliki wspÃ³lne)
 Group:		Applications/Emulators
 
 %description common
@@ -67,20 +67,20 @@ What Fuse does have:
 
 This package contains common files for all versions.
 
-%description common -l pl
+%description common -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
-W tym pakiecie znajduj± siê wspólne pliki dla wszystkich wersji.
+W tym pakiecie znajdujÄ… siÄ™ wspÃ³lne pliki dla wszystkich wersji.
 
 %package fb
 Summary:	Free Unix Spectrum Emulator (framebuffer version)
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
@@ -97,20 +97,20 @@ What Fuse does have:
 
 This package contains files for framebuffer version.
 
-%description fb -l pl
+%description fb -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z
+W tym pakiecie znajdujÄ… siÄ™ pliki dla wersji korzystajÄ…cej z
 framebuffera.
 
 %package sdl
 Summary:	Free Unix Spectrum Emulator (SDL version)
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	SDL >= 1.2.4
@@ -128,19 +128,19 @@ What Fuse does have:
 
 This package contains files for SDL version.
 
-%description sdl -l pl
+%description sdl -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z SDL.
+W tym pakiecie znajdujÄ… siÄ™ pliki dla wersji korzystajÄ…cej z SDL.
 
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
@@ -157,19 +157,19 @@ What Fuse does have:
 
 This package contains files for svga version.
 
-%description svga -l pl
+%description svga -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 
-W tym pakiecie znajduj± siê pliki dla wersji korzystaj±cej z svgalib.
+W tym pakiecie znajdujÄ… siÄ™ pliki dla wersji korzystajÄ…cej z svgalib.
 
 %package X11
 Summary:	Free Unix Spectrum Emulator (X11 version)
-Summary(pl):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
+Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
@@ -186,15 +186,15 @@ What Fuse does have:
 
 This package contains files for X11 version.
 
-%description X11 -l pl
+%description X11 -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego w³a¶ciwo¶ci to:
+Jego wÅ‚aÅ›ciwoÅ›ci to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Mo¿liwo¶æ ³adowania programów z plików .tzx.
-* D¼wiêk.
+* MoÅ¼liwoÅ›Ä‡ Å‚adowania programÃ³w z plikÃ³w .tzx.
+* DÅºwiÄ™k.
 
-W tym pakiecie znajduj± siê pliki dla wersji X11.
+W tym pakiecie znajdujÄ… siÄ™ pliki dla wersji X11.
 
 %prep
 %setup -q
