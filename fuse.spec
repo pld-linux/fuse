@@ -6,7 +6,7 @@
 %bcond_without	sdl	# do not build SDL version
 #
 Summary:	Free Unix Spectrum Emulator
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.7.0
 Release:	2
@@ -51,7 +51,7 @@ Jego właściwości to:
 
 %package common
 Summary:	Free Unix Spectrum Emulator (common files)
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
 
 %description common
@@ -80,7 +80,7 @@ W tym pakiecie znajdują się wspólne pliki dla wszystkich wersji.
 
 %package fb
 Summary:	Free Unix Spectrum Emulator (framebuffer version)
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na framebuffer)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
@@ -110,7 +110,7 @@ framebuffera.
 
 %package sdl
 Summary:	Free Unix Spectrum Emulator (SDL version)
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	SDL >= 1.2.4
@@ -140,7 +140,7 @@ W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL.
 
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
@@ -169,7 +169,7 @@ W tym pakiecie znajdują się pliki dla wersji korzystającej z svgalib.
 
 %package X11
 Summary:	Free Unix Spectrum Emulator (X11 version)
-Summary(pl.UTF-8):   Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
