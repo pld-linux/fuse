@@ -8,12 +8,12 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.8.0
+Version:	0.8.0.1
 Release:	1
 License:	GPL
 Group:		Applications/Emulators
 Source0:	ftp://ftp.worldofspectrum.org/pub/sinclair/emulators/unix/%{name}-%{version}.tar.gz
-# Source0-md5:	598517e4fe808066e8d10f0fac162945
+# Source0-md5:	34f85578c64d94ebf0cca309f837d502
 Patch0:		%{name}-missing.patch
 Patch1:		%{name}-update.patch
 URL:		http://fuse-emulator.sourceforge.net/
