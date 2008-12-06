@@ -1,5 +1,4 @@
-# TODO: For big endian machines, add #define WORDS_BIGENDIAN 1
-# at the end of config.h
+#
 # Conditional build:
 %bcond_without	svga	# do not build svgalib version
 %bcond_without	x	# do not build X11 version
@@ -10,7 +9,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.10.0
-Release:	0.1
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -19,15 +18,15 @@ Patch0:		%{name}-missing.patch
 Patch1:		%{name}-endian.patch
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
-BuildRequires:	autoconf >= 2.59-9
-BuildRequires:	automake
+#BuildRequires:	autoconf >= 2.59-9
+#BuildRequires:	automake
 %{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
 BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libspectrum-devel >= 0.4.0
-BuildRequires:	libtool
+#BuildRequires:	libtool
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
@@ -204,14 +203,14 @@ W tym pakiecie znajdują się pliki dla wersji X11.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoheader}
-%{__autoconf}
-%{__automake}
+#%{__libtoolize}
+#%{__aclocal}
+#%{__autoheader}
+#%{__autoconf}
+#%{__automake}
 
 # X11
 %if %{with x}
