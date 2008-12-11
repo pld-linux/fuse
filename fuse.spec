@@ -8,25 +8,24 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	0.10.0
+Version:	0.10.0.1
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	3c759a1faa7a076c333567192cad009a
-Patch0:		%{name}-missing.patch
-Patch1:		%{name}-endian.patch
+# Source0-md5:	9e3b8109cbbf8ea17b02407479bd7190
+Patch0:		%{name}-endian.patch
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
-#BuildRequires:	autoconf >= 2.59-9
-#BuildRequires:	automake
+BuildRequires:	autoconf >= 2.59-9
+BuildRequires:	automake
 %{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
 BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 0.4.0
-#BuildRequires:	libtool
+BuildRequires:	libspectrum-devel >= 0.5.0
+BuildRequires:	libtool
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
@@ -43,6 +42,7 @@ What Fuse does have:
   stuff).
 * Support for loading from .tzx files.
 * Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 %description -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
@@ -51,6 +51,7 @@ Jego właściwości to:
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
 * Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 %package common
 Summary:	Free Unix Spectrum Emulator (common files)
@@ -67,7 +68,8 @@ What Fuse does have:
   speed on a SparcStation 4 unless you do too much graphics intensive
   stuff).
 * Support for loading from .tzx files.
-* Sound.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 This package contains common files for all versions.
 
@@ -97,7 +99,8 @@ What Fuse does have:
   speed on a SparcStation 4 unless you do too much graphics intensive
   stuff).
 * Support for loading from .tzx files.
-* Sound.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 This package contains files for framebuffer version.
 
@@ -108,6 +111,7 @@ Jego właściwości to:
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
 * Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z
 framebuffera.
@@ -128,7 +132,8 @@ What Fuse does have:
   speed on a SparcStation 4 unless you do too much graphics intensive
   stuff).
 * Support for loading from .tzx files.
-* Sound.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 This package contains files for SDL version.
 
@@ -139,6 +144,7 @@ Jego właściwości to:
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
 * Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL.
 
@@ -157,7 +163,8 @@ What Fuse does have:
   speed on a SparcStation 4 unless you do too much graphics intensive
   stuff).
 * Support for loading from .tzx files.
-* Sound.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 This package contains files for svga version.
 
@@ -168,6 +175,7 @@ Jego właściwości to:
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
 * Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z svgalib.
 
@@ -186,7 +194,8 @@ What Fuse does have:
   speed on a SparcStation 4 unless you do too much graphics intensive
   stuff).
 * Support for loading from .tzx files.
-* Sound.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
 
 This package contains files for X11 version.
 
@@ -197,20 +206,20 @@ Jego właściwości to:
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
 * Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajdują się pliki dla wersji X11.
 
 %prep
 %setup -q
-%patch0 -p1
-#%patch1 -p1
+#%patch0 -p1
 
 %build
-#%{__libtoolize}
-#%{__aclocal}
-#%{__autoheader}
-#%{__autoconf}
-#%{__automake}
+%{__libtoolize}
+%{__aclocal}
+%{__autoheader}
+%{__autoconf}
+%{__automake}
 
 # X11
 %if %{with x}
