@@ -14,7 +14,7 @@ License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	9e3b8109cbbf8ea17b02407479bd7190
-Patch0:		%{name}-endian.patch
+Patch0:		%{name}-widget.patch
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
 BuildRequires:	autoconf >= 2.59-9
@@ -212,7 +212,7 @@ W tym pakiecie znajdują się pliki dla wersji X11.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 
 %build
 %{__libtoolize}
