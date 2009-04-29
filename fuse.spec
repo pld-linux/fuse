@@ -21,7 +21,6 @@ URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 %{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
-BuildRequires:	lib765-devel
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
