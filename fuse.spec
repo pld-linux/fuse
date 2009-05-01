@@ -10,7 +10,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.10.0.2
-Release:	0.5
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -235,8 +235,7 @@ cp -f fuse fuse-x11
 # SDL
 %if %{with sdl}
 %configure \
-	--disable-ui-joystick \
-	--with-joystick \
+	--enable-ui-joystick \
 	--with-sdl
 %{__make} clean
 %{__make}
@@ -246,8 +245,7 @@ cp -f fuse fuse-sdl
 # svga
 %if %{with svga}
 %configure \
-	--disable-ui-joystick \
-	--with-joystick \
+	--enable-ui-joystick \
 	--with-svgalib
 %{__make} clean
 %{__make}
