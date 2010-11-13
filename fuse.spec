@@ -1,7 +1,7 @@
 # TODO: Fix issue with the WORDS_BIGENDIAN macro of autoconf-2.63
 # fuse built using autotools is unusable because of it. 
 # Conditional build:
-%bcond_without	svga	# do not build svgalib version
+%bcond_with	svga	# do not build svgalib version
 %bcond_without	x	# do not build X11 version
 %bcond_without	fb	# do not build framebuffer version
 %bcond_without	sdl	# do not build SDL version
@@ -10,7 +10,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	0.10.0.2
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://dl.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
