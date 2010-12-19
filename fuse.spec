@@ -1,5 +1,6 @@
 # TODO: Fix issue with the WORDS_BIGENDIAN macro of autoconf-2.63
-# fuse built using autotools is unusable because of it. 
+# fuse built using autotools is unusable because of it.
+#
 # Conditional build:
 %bcond_with	svga	# do not build svgalib version
 %bcond_without	x	# do not build X11 version
@@ -15,12 +16,14 @@ License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	c83fc5c8b1af89cc341816b298124f10
-Patch0:	%{name}-svgakeysym.patch
+Patch0:		%{name}-svgakeysym.patch
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
+BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 %{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
+%{?with_fb:BuildRequires:	gpm-devel}
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
