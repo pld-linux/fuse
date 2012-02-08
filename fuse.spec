@@ -11,11 +11,12 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.0.0.1
-Release:	4
+Release:	5
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	e3c0ea98517857f4f13a1d82159f26ff
+Patch0:		%{name}-includes.patch
 URL:		http://fuse-emulator.sourceforge.net/
 %{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
 BuildRequires:	alsa-lib-devel
@@ -214,6 +215,7 @@ W tym pakiecie znajdują się pliki dla wersji X11.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 #%{__libtoolize}
