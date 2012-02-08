@@ -1,0 +1,10 @@
+--- fuse-1.0.0.1/screenshot.c~	2011-01-12 22:36:28.000000000 +0100
++++ fuse-1.0.0.1/screenshot.c	2012-02-09 00:11:08.747680535 +0100
+@@ -47,7 +47,8 @@
+ 
+ #ifdef USE_LIBPNG
+ 
++#include <zlib.h>
+ #include <png.h>
+ 
+ static int get_rgb32_data( libspectrum_byte *rgb32_data, size_t stride,
