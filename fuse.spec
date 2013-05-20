@@ -3,31 +3,33 @@
 #
 # Conditional build:
 %bcond_with	svga	# do not build svgalib version
-%bcond_without	x	# do not build X11 version
 %bcond_without	fb	# do not build framebuffer version
+%bcond_without	gtk	# do not build gtk version
+%bcond_with	gtk3	# do not build gtk3 version
 %bcond_without	sdl	# do not build SDL version
 #
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.0.0.1
-Release:	5
+Version:	1.1.0
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	e3c0ea98517857f4f13a1d82159f26ff
+# Source0-md5:	df79d24647e56e4ba2bf7a5f26aa5ccd
 Patch0:		%{name}-includes.patch
 URL:		http://fuse-emulator.sourceforge.net/
-%{?with_sdl:BuildRequires:	SDL-devel >= 1.2.4}
+BuildRequires:	SDL-devel >= 1.2.4
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
-%{?with_x:BuildRequires:	gtk+2-devel >= 1:2.0.0}
+%{?with_gtk:BuildRequires:	gtk+2-devel >= 1:2.0.0}
+%{?with_gtk3:BuildRequires:	gtk+3-devel}
 %{?with_fb:BuildRequires:	gpm-devel}
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 1.0.0
+BuildRequires:	libspectrum-devel >= 1.1.0
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
@@ -182,13 +184,14 @@ Jego właściwości to:
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z svgalib.
 
-%package X11
+%package gtk
 Summary:	Free Unix Spectrum Emulator (X11 version)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
 Group:		Applications/Emulators
+Obsoletes:	fuse-X11
 Requires:	%{name}-common = %{version}-%{release}
 
-%description X11
+%description gtk
 fuse is Free Unix Spectrum Emulator.
 What Fuse does have:
 
@@ -200,9 +203,9 @@ What Fuse does have:
 * Sound emulation.
 * Emulation of several printers for ZX Spectrum.
 
-This package contains files for X11 version.
+This package contains files for gtk version.
 
-%description X11 -l pl.UTF-8
+%description gtk -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
 Jego właściwości to:
 
@@ -211,11 +214,42 @@ Jego właściwości to:
 * Dźwięk.
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
-W tym pakiecie znajdują się pliki dla wersji X11.
+W tym pakiecie znajdują się pliki dla wersji gtk.
+
+%package gtk3
+Summary:	Free Unix Spectrum Emulator (X11 version)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
+Group:		Applications/Emulators
+Obsoletes:	fuse-X11
+Requires:	%{name}-common = %{version}-%{release}
+
+%description gtk3
+fuse is Free Unix Spectrum Emulator.
+What Fuse does have:
+
+* Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
+  speed on any computer you're likely to try it on (it runs at full
+  speed on a SparcStation 4 unless you do too much graphics intensive
+  stuff).
+* Support for loading from .tzx files.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
+
+This package contains files for gtk3 version.
+
+%description gtk3 -l pl.UTF-8
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
+Jego właściwości to:
+
+* Emulacja ZX Spectrum 48K/128K/+2/+2A.
+* Możliwość ładowania programów z plików .tzx.
+* Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
+
+W tym pakiecie znajdują się pliki dla wersji gtk3.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 #%{__libtoolize}
@@ -223,17 +257,6 @@ W tym pakiecie znajdują się pliki dla wersji X11.
 #%{__autoheader}
 #%{__autoconf}
 #%{__automake}
-
-# X11
-%if %{with x}
-%configure  \
-	--disable-ui-joystick \
-	--with-joystick \
-	--with-gtk
-%{__make} clean
-%{__make}
-cp -f fuse fuse-x11
-%endif
 
 # SDL
 %if %{with sdl}
@@ -265,6 +288,29 @@ cp -f fuse fuse-svga
 cp -f fuse fuse-fb
 %endif
 
+# These two must be the last, because they install menu_data.ui
+# gtk
+%if %{with gtk}
+%configure  \
+	--disable-ui-joystick \
+	--with-joystick \
+	--with-gtk
+%{__make} clean
+%{__make}
+cp -f fuse fuse-gtk
+%endif
+
+# gtk3
+%if %{with gtk3}
+%configure  \
+	--disable-ui-joystick \
+	--with-joystick \
+	--enable-gtk3
+%{__make} clean
+%{__make}
+cp -f fuse fuse-gtk3
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -272,7 +318,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{?with_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
-%{?with_x:install fuse-x11	$RPM_BUILD_ROOT%{_bindir}}
+%{?with_gtk:install fuse-gtk	$RPM_BUILD_ROOT%{_bindir}}
+%{?with_gtk3:install fuse-gtk3	$RPM_BUILD_ROOT%{_bindir}}
 %{?with_fb:install fuse-fb	$RPM_BUILD_ROOT%{_bindir}}
 %{?with_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
 
@@ -281,7 +328,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(644,root,root,755)
-%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/*
+%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/ChangeLog hacking/*.txt
 %{_datadir}/%{name}
 %{_mandir}/man1/fuse.1*
 
@@ -289,6 +336,18 @@ rm -rf $RPM_BUILD_ROOT
 %files fb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-fb
+%endif
+
+%if %{with gtk}
+%files gtk
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fuse-gtk
+%endif
+
+%if %{with gtk3}
+%files gtk3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fuse-gtk3
 %endif
 
 %if %{with sdl}
@@ -301,10 +360,4 @@ rm -rf $RPM_BUILD_ROOT
 %files svga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-svga
-%endif
-
-%if %{with x}
-%files X11
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/fuse-x11
 %endif
