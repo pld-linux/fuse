@@ -17,7 +17,6 @@ License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	df79d24647e56e4ba2bf7a5f26aa5ccd
-Patch0:		%{name}-includes.patch
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 BuildRequires:	alsa-lib-devel
@@ -26,7 +25,6 @@ BuildRequires:	automake
 %{?with_gtk:BuildRequires:	gtk+2-devel >= 1:2.0.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel}
 %{?with_fb:BuildRequires:	gpm-devel}
-BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libspectrum-devel >= 1.1.0
@@ -292,7 +290,6 @@ cp -f fuse fuse-fb
 # gtk
 %if %{with gtk}
 %configure  \
-	--disable-ui-joystick \
 	--with-joystick \
 	--with-gtk
 %{__make} clean
@@ -303,7 +300,6 @@ cp -f fuse fuse-gtk
 # gtk3
 %if %{with gtk3}
 %configure  \
-	--disable-ui-joystick \
 	--with-joystick \
 	--enable-gtk3
 %{__make} clean
