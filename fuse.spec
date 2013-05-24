@@ -2,11 +2,11 @@
 # fuse built using autotools is unusable because of it.
 #
 # Conditional build:
-%bcond_with	svga	# do not build svgalib version
-%bcond_without	fb	# do not build framebuffer version
-%bcond_without	gtk	# do not build gtk version
-%bcond_with	gtk3	# do not build gtk3 version
-%bcond_without	sdl	# do not build SDL version
+%bcond_with	svga	# svgalib version
+%bcond_without	fb	# framebuffer version
+%bcond_without	gtk	# GTK+ 2 version
+%bcond_without	gtk3	# GTK+ 3 version
+%bcond_without	sdl	# SDL version
 #
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
@@ -22,17 +22,20 @@ BuildRequires:	SDL-devel >= 1.2.4
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
-%{?with_gtk:BuildRequires:	gtk+2-devel >= 1:2.0.0}
+BuildRequires:	glib2-devel >= 1:2.20.0
+%{?with_gtk:BuildRequires:	gtk+2-devel >= 2:2.18.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel}
 %{?with_fb:BuildRequires:	gpm-devel}
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libspectrum-devel >= 1.1.0
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 %{?with_svga:BuildRequires:	svgalib-devel}
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -60,6 +63,7 @@ Jego właściwości to:
 Summary:	Free Unix Spectrum Emulator (common files)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
+Requires:	glib2 >= 1:2.20.0
 Requires:	libspectrum >= 0.4.0
 
 %description common
@@ -183,11 +187,12 @@ Jego właściwości to:
 W tym pakiecie znajdują się pliki dla wersji korzystającej z svgalib.
 
 %package gtk
-Summary:	Free Unix Spectrum Emulator (X11 version)
-Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
+Summary:	Free Unix Spectrum Emulator (GTK+ 2 version)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 2)
 Group:		Applications/Emulators
-Obsoletes:	fuse-X11
 Requires:	%{name}-common = %{version}-%{release}
+Requires:	gtk+2 >= 2:2.18.0
+Obsoletes:	fuse-X11
 
 %description gtk
 fuse is Free Unix Spectrum Emulator.
@@ -201,7 +206,7 @@ What Fuse does have:
 * Sound emulation.
 * Emulation of several printers for ZX Spectrum.
 
-This package contains files for gtk version.
+This package contains files for GTK+ 2 version.
 
 %description gtk -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
@@ -212,14 +217,14 @@ Jego właściwości to:
 * Dźwięk.
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
-W tym pakiecie znajdują się pliki dla wersji gtk.
+W tym pakiecie znajdują się pliki dla wersji GTK+ 2.
 
 %package gtk3
-Summary:	Free Unix Spectrum Emulator (X11 version)
-Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na XWindow)
+Summary:	Free Unix Spectrum Emulator (GTK+ 3 version)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 3)
 Group:		Applications/Emulators
-Obsoletes:	fuse-X11
 Requires:	%{name}-common = %{version}-%{release}
+Obsoletes:	fuse-X11
 
 %description gtk3
 fuse is Free Unix Spectrum Emulator.
@@ -233,7 +238,7 @@ What Fuse does have:
 * Sound emulation.
 * Emulation of several printers for ZX Spectrum.
 
-This package contains files for gtk3 version.
+This package contains files for GTK+ 3 version.
 
 %description gtk3 -l pl.UTF-8
 fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
@@ -244,7 +249,7 @@ Jego właściwości to:
 * Dźwięk.
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
-W tym pakiecie znajdują się pliki dla wersji gtk3.
+W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 
 %prep
 %setup -q
@@ -259,7 +264,6 @@ W tym pakiecie znajdują się pliki dla wersji gtk3.
 # SDL
 %if %{with sdl}
 %configure \
-	--enable-ui-joystick \
 	--with-sdl
 %{__make} clean
 %{__make}
@@ -269,7 +273,6 @@ cp -f fuse fuse-sdl
 # svga
 %if %{with svga}
 %configure \
-	--enable-ui-joystick \
 	--with-svgalib
 %{__make} clean
 %{__make}
@@ -279,7 +282,6 @@ cp -f fuse fuse-svga
 # framebuffer
 %if %{with fb}
 %configure \
-	--with-joystick \
 	--with-fb
 %{__make} clean
 %{__make}
@@ -290,7 +292,6 @@ cp -f fuse fuse-fb
 # gtk
 %if %{with gtk}
 %configure  \
-	--with-joystick \
 	--with-gtk
 %{__make} clean
 %{__make}
@@ -300,7 +301,7 @@ cp -f fuse fuse-gtk
 # gtk3
 %if %{with gtk3}
 %configure  \
-	--with-joystick \
+	--with-gtk \
 	--enable-gtk3
 %{__make} clean
 %{__make}
