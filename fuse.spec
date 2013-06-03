@@ -11,12 +11,12 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.1.0
+Version:	1.1.1
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	df79d24647e56e4ba2bf7a5f26aa5ccd
+# Source0-md5:	858e530ffc04a2ed62dce76ac29b5762
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 BuildRequires:	alsa-lib-devel
@@ -28,7 +28,7 @@ BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 1.1.0
+BuildRequires:	libspectrum-devel >= 1.1.1
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
