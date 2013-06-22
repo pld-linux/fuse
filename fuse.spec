@@ -12,7 +12,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.1.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -319,6 +319,7 @@ rm -rf $RPM_BUILD_ROOT
 %{?with_gtk3:install fuse-gtk3	$RPM_BUILD_ROOT%{_bindir}}
 %{?with_fb:install fuse-fb	$RPM_BUILD_ROOT%{_bindir}}
 %{?with_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
+install ui/widget/fuse.font $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
