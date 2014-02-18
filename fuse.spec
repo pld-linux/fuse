@@ -12,11 +12,14 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.1.1
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		Applications/Emulators
-Source0:	http://download.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	858e530ffc04a2ed62dce76ac29b5762
+Source1:	ti_m397.rom
+# Source1-md5:	d23c2d692f0b9d969f5f303c770a07fd
+Patch0:		fuse-1.1.1.patch
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 BuildRequires:	alsa-lib-devel
@@ -256,6 +259,7 @@ W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 %setup -q
 
 %build
+%patch0 -p1
 #%{__libtoolize}
 #%{__aclocal}
 #%{__autoheader}
@@ -321,6 +325,7 @@ rm -rf $RPM_BUILD_ROOT
 %{?with_fb:install fuse-fb	$RPM_BUILD_ROOT%{_bindir}}
 %{?with_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
 install ui/widget/fuse.font $RPM_BUILD_ROOT%{_datadir}/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
