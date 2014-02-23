@@ -69,6 +69,7 @@ Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
 Requires:	glib2 >= 1:2.20.0
 Requires:	libspectrum >= 0.4.0
+Suggests:	fdd3000e
 
 %description common
 fuse is Free Unix Spectrum Emulator.
