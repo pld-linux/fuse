@@ -11,12 +11,12 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.1.1
-Release:	8
+Version:	1.2.0
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	858e530ffc04a2ed62dce76ac29b5762
+# Source0-md5:	93a6f5c76984020efe12c5585b13bcad
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 Patch0:		fuse-1.1.1-2.patch
@@ -32,7 +32,7 @@ BuildRequires:	glib2-devel >= 1:2.20.0
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 1.1.1
+BuildRequires:	libspectrum-devel >= 1.2.0
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
@@ -260,7 +260,7 @@ W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 %setup -q
 
 %build
-%patch0 -p1
+#%patch0 -p1
 #%{__libtoolize}
 #%{__aclocal}
 #%{__autoheader}
@@ -269,63 +269,87 @@ W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 
 # SDL
 %if %{with sdl}
-%configure \
-	--with-sdl
-%{__make} clean
+mkdir build-sdl
+cd build-sdl
+../%configure \
+	--with-sdl \
+	--program-suffix=-sdl
 %{__make}
-cp -f fuse fuse-sdl
+cd ..
 %endif
 
 # svga
 %if %{with svga}
-%configure \
-	--with-svgalib
-%{__make} clean
+mkdir build-svga
+cd build-svga
+../%configure \
+	--with-svgalib \
+	--program-suffix=-svga
 %{__make}
-cp -f fuse fuse-svga
+cd ..
 %endif
 
 # framebuffer
 %if %{with fb}
-%configure \
-	--with-fb
-%{__make} clean
+mkdir build-fb
+cd build-fb
+../%configure \
+	--with-fb \
+	--program-suffix=-fb
 %{__make}
-cp -f fuse fuse-fb
+cd ..
 %endif
 
-# These two must be the last, because they install menu_data.ui
 # gtk
 %if %{with gtk}
-%configure  \
-	--with-gtk
-%{__make} clean
+mkdir build-gtk
+cd build-gtk
+../%configure  \
+	--with-gtk \
+	--program-suffix=-gtk
 %{__make}
-cp -f fuse fuse-gtk
+cd ..
 %endif
 
 # gtk3
 %if %{with gtk3}
-%configure  \
+mkdir build-gtk3
+cd build-gtk3
+../%configure  \
 	--with-gtk \
-	--enable-gtk3
-%{__make} clean
+	--enable-gtk3 \
+	--program-suffix=-gtk3
 %{__make}
-cp -f fuse fuse-gtk3
+cd ..
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%{__make} install \
+%if %{with sdl}
+%{__make} -C build-sdl install \
 	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
-%{?with_svga:install fuse-svga	$RPM_BUILD_ROOT%{_bindir}}
-%{?with_gtk:install fuse-gtk	$RPM_BUILD_ROOT%{_bindir}}
-%{?with_gtk3:install fuse-gtk3	$RPM_BUILD_ROOT%{_bindir}}
-%{?with_fb:install fuse-fb	$RPM_BUILD_ROOT%{_bindir}}
-%{?with_sdl:install fuse-sdl	$RPM_BUILD_ROOT%{_bindir}}
-install ui/widget/fuse.font $RPM_BUILD_ROOT%{_datadir}/%{name}
+%if %{with svga}
+%{__make} -C build-svga install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%if %{with fb}
+%{__make} -C build-fb install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%if %{with gtk}
+%{__make} -C build-gtk install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%if %{with gtk3}
+%{__make} -C build-gtk3 install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
 install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %clean
@@ -333,36 +357,40 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(644,root,root,755)
-%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/ChangeLog hacking/*.txt
+%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/*.txt
 %{_datadir}/%{name}
-%{_mandir}/man1/fuse.1*
 
 %if %{with fb}
 %files fb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-fb
+%{_mandir}/man1/fuse-fb.1*
 %endif
 
 %if %{with gtk}
 %files gtk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-gtk
+%{_mandir}/man1/fuse-gtk.1*
 %endif
 
 %if %{with gtk3}
 %files gtk3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-gtk3
+%{_mandir}/man1/fuse-gtk3.1*
 %endif
 
 %if %{with sdl}
 %files sdl
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-sdl
+%{_mandir}/man1/fuse-sdl.1*
 %endif
 
 %if %{with svga}
 %files svga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-svga
+%{_mandir}/man1/fuse-svga.1*
 %endif
