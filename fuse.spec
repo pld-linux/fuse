@@ -1,10 +1,8 @@
-# TODO: Fix issue with the WORDS_BIGENDIAN macro of autoconf-2.63
-# fuse built using autotools is unusable because of it.
 #
 # Conditional build:
 %bcond_with	svga	# svgalib version
 %bcond_without	fb	# framebuffer version
-%bcond_without	gtk	# GTK+ 2 version
+%bcond_without	gtk2	# GTK+ 2 version
 %bcond_without	gtk3	# GTK+ 3 version
 %bcond_without	sdl	# SDL version
 #
@@ -26,8 +24,8 @@ BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	glib2-devel >= 1:2.20.0
-%{?with_gtk:BuildRequires:	gtk+2-devel >= 2:2.18.0}
-%{?with_gtk3:BuildRequires:	gtk+3-devel}
+%{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.18.0}
+%{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_fb:BuildRequires:	gpm-devel}
 BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
@@ -37,6 +35,8 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.673
+BuildRequires:	sed >= 4.0
 %{?with_svga:BuildRequires:	svgalib-devel}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
@@ -68,7 +68,7 @@ Summary:	Free Unix Spectrum Emulator (common files)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
 Requires:	glib2 >= 1:2.20.0
-Requires:	libspectrum >= 0.4.0
+Requires:	libspectrum >= 1.2.0
 Suggests:	fdd3000e
 
 %description common
@@ -256,15 +256,32 @@ Jego właściwości to:
 
 W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 
+%package -n bash-completion-fuse
+Summary:	Bash completion for FUSE emulator commands
+Summary(pl.UTF-8):	Bashowe dopełnianie składni poleceń emulatora FUSE
+Group:		Applications/Shells
+Requires:	%{name}-common = %{version}-%{release}
+Requires:	bash-completion >= 2.0
+
+%description -n bash-completion-fuse
+Bash completion for FUSE emulator commands.
+
+%description -n bash-completion-fuse -l pl.UTF-8
+Bashowe dopełnianie składni poleceń emulatora FUSE.
+
 %prep
 %setup -q
+# needs update for 1.2.x
+#%patch0 -p1
+
+# PLD uses per-backend fuse program instead of just "fuse"
+%{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
 
 %build
-#%patch0 -p1
 #%{__libtoolize}
-#%{__aclocal}
-#%{__autoheader}
+#%{__aclocal} -I m4
 #%{__autoconf}
+#%{__autoheader}
 #%{__automake}
 
 # SDL
@@ -272,8 +289,9 @@ W tym pakiecie znajdują się pliki dla wersji GTK+ 3.
 mkdir build-sdl
 cd build-sdl
 ../%configure \
-	--with-sdl \
-	--program-suffix=-sdl
+	--program-suffix=-sdl \
+	--with-bash-completion-dir=%{bash_compdir} \
+	--with-sdl
 %{__make}
 cd ..
 %endif
@@ -283,8 +301,9 @@ cd ..
 mkdir build-svga
 cd build-svga
 ../%configure \
-	--with-svgalib \
-	--program-suffix=-svga
+	--program-suffix=-svga \
+	--with-bash-completion-dir=%{bash_compdir} \
+	--with-svgalib
 %{__make}
 cd ..
 %endif
@@ -294,19 +313,21 @@ cd ..
 mkdir build-fb
 cd build-fb
 ../%configure \
-	--with-fb \
-	--program-suffix=-fb
+	--program-suffix=-fb \
+	--with-bash-completion-dir=%{bash_compdir} \
+	--with-fb
 %{__make}
 cd ..
 %endif
 
 # gtk
-%if %{with gtk}
-mkdir build-gtk
-cd build-gtk
+%if %{with gtk2}
+mkdir build-gtk2
+cd build-gtk2
 ../%configure  \
-	--with-gtk \
-	--program-suffix=-gtk
+	--program-suffix=-gtk \
+	--with-bash-completion-dir=%{bash_compdir} \
+	--with-gtk
 %{__make}
 cd ..
 %endif
@@ -316,9 +337,10 @@ cd ..
 mkdir build-gtk3
 cd build-gtk3
 ../%configure  \
-	--with-gtk \
 	--enable-gtk3 \
-	--program-suffix=-gtk3
+	--program-suffix=-gtk3 \
+	--with-bash-completion-dir=%{bash_compdir} \
+	--with-gtk
 %{__make}
 cd ..
 %endif
@@ -340,8 +362,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
-%if %{with gtk}
-%{__make} -C build-gtk install \
+%if %{with gtk2}
+%{__make} -C build-gtk2 install \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
@@ -367,7 +389,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/fuse-fb.1*
 %endif
 
-%if %{with gtk}
+%if %{with gtk2}
 %files gtk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-gtk
@@ -394,3 +416,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/fuse-svga
 %{_mandir}/man1/fuse-svga.1*
 %endif
+
+%files -n bash-completion-fuse
+%defattr(644,root,root,755)
+%{bash_compdir}/fuse
