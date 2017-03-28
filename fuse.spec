@@ -5,12 +5,13 @@
 %bcond_without	gtk2	# GTK+ 2 version
 %bcond_without	gtk3	# GTK+ 3 version
 %bcond_without	sdl	# SDL version
+%bcond_with	libao	# libao instead of alsa
 #
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.3.4
-Release:	1
+Release:	1.1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -20,13 +21,14 @@ Source1:	ti_m397.rom
 Patch0:		fuse-1.1.1-2.patch
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
-BuildRequires:	alsa-lib-devel
+%{!?with_libao:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.18.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_fb:BuildRequires:	gpm-devel}
+%{?with_libao:BuildRequires:	libao-devel}
 BuildRequires:	libjsw-devel
 BuildRequires:	libmount-devel
 BuildRequires:	libpng-devel
@@ -316,6 +318,10 @@ cd build-fb
 ../%configure \
 	--program-suffix=-fb \
 	--with-bash-completion-dir=%{bash_compdir} \
+%if %{with_libao}
+	--without-alsa \
+	--with-libao \
+%endif
 	--with-fb
 %{__make}
 cd ..
@@ -328,6 +334,10 @@ cd build-gtk2
 ../%configure  \
 	--program-suffix=-gtk \
 	--with-bash-completion-dir=%{bash_compdir} \
+%if %{with_libao}
+	--without-alsa \
+	--with-libao \
+%endif
 	--with-gtk
 %{__make}
 cd ..
@@ -341,6 +351,10 @@ cd build-gtk3
 	--enable-gtk3 \
 	--program-suffix=-gtk3 \
 	--with-bash-completion-dir=%{bash_compdir} \
+%if %{with_libao}
+	--without-alsa \
+	--with-libao \
+%endif
 	--with-gtk
 %{__make}
 cd ..
