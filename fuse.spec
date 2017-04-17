@@ -11,7 +11,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.3.4
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -281,12 +281,6 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
 
 %build
-#%{__libtoolize}
-#%{__aclocal} -I m4
-#%{__autoconf}
-#%{__autoheader}
-#%{__automake}
-
 # SDL
 %if %{with sdl}
 mkdir build-sdl
@@ -318,7 +312,7 @@ cd build-fb
 ../%configure \
 	--program-suffix=-fb \
 	--with-bash-completion-dir=%{bash_compdir} \
-%if %{with_libao}
+%if %{with libao}
 	--without-alsa \
 	--with-libao \
 %endif
@@ -334,7 +328,7 @@ cd build-gtk2
 ../%configure  \
 	--program-suffix=-gtk \
 	--with-bash-completion-dir=%{bash_compdir} \
-%if %{with_libao}
+%if %{with libao}
 	--without-alsa \
 	--with-libao \
 %endif
@@ -351,7 +345,7 @@ cd build-gtk3
 	--enable-gtk3 \
 	--program-suffix=-gtk3 \
 	--with-bash-completion-dir=%{bash_compdir} \
-%if %{with_libao}
+%if %{with libao}
 	--without-alsa \
 	--with-libao \
 %endif
