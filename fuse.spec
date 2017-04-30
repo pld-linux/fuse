@@ -5,17 +5,17 @@
 %bcond_without	gtk2	# GTK+ 2 version
 %bcond_without	gtk3	# GTK+ 3 version
 %bcond_without	sdl	# SDL version
-%bcond_with	libao	# libao instead of alsa
+%bcond_without	libao	# libao instead of alsa
 #
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.3.4
-Release:	3
+Version:	1.3.5
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	300fb52f5e86fa2e4b01163fa5d74a7b
+# Source0-md5:	23df5573a2223c9c26f00eab592423e2
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 Patch0:		fuse-1.1.1-2.patch
@@ -33,7 +33,7 @@ BuildRequires:	libjsw-devel
 BuildRequires:	libmount-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 1.3.2
+BuildRequires:	libspectrum-devel >= 1.3.3
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
@@ -71,7 +71,7 @@ Summary:	Free Unix Spectrum Emulator (common files)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
 Requires:	glib2 >= 1:2.20.0
-Requires:	libspectrum >= 1.3.2
+Requires:	libspectrum >= 1.3.3
 Suggests:	fdd3000e
 
 %description common
