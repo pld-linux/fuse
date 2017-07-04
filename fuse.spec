@@ -18,16 +18,16 @@ Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.g
 # Source0-md5:	b3f08c88c002c53fb7f4a20e7c177aa0
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
-Patch0:		fuse-1.1.1-2.patch
+Patch0:		%{name}-1.1.1-2.patch
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	glib2-devel >= 1:2.20.0
+%{?with_fb:BuildRequires:	gpm-devel}
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.18.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
-%{?with_fb:BuildRequires:	gpm-devel}
 %{?with_libao:BuildRequires:	libao-devel}
 BuildRequires:	libjsw-devel
 BuildRequires:	libmount-devel
@@ -38,12 +38,14 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.673
+BuildRequires:	rpmbuild(macros) >= 1.697
 BuildRequires:	sed >= 4.0
 %{?with_svga:BuildRequires:	svgalib-devel}
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_make_opts V=1
 
 %description
 fuse is Free Unix Spectrum Emulator.
@@ -289,7 +291,7 @@ cd build-sdl
 	--program-suffix=-sdl \
 	--with-bash-completion-dir=%{bash_compdir} \
 	--with-sdl
-%{__make} V=1
+%{__make}
 cd ..
 %endif
 
@@ -301,7 +303,7 @@ cd build-svga
 	--program-suffix=-svga \
 	--with-bash-completion-dir=%{bash_compdir} \
 	--with-svgalib
-%{__make} V=1
+%{__make}
 cd ..
 %endif
 
@@ -317,7 +319,7 @@ cd build-fb
 	--with-libao \
 %endif
 	--with-fb
-%{__make} V=1
+%{__make}
 cd ..
 %endif
 
@@ -333,7 +335,7 @@ cd build-gtk2
 	--with-libao \
 %endif
 	--with-gtk
-%{__make} V=1
+%{__make}
 cd ..
 %endif
 
@@ -350,7 +352,7 @@ cd build-gtk3
 	--with-libao \
 %endif
 	--with-gtk
-%{__make} V=1
+%{__make}
 cd ..
 %endif
 
@@ -381,7 +383,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/%{name}
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
