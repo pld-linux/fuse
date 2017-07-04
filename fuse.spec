@@ -45,8 +45,6 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_make_opts V=1
-
 %description
 fuse is Free Unix Spectrum Emulator.
 What Fuse does have:
@@ -283,13 +281,17 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
 
 %build
+%define	common_opts \\\
+	--disable-silent-rules \\\
+	--with-bash-completion-dir=%{bash_compdir} \\\
+	%{nil}
 # SDL
 %if %{with sdl}
 mkdir build-sdl
 cd build-sdl
 ../%configure \
+	%{common_opts} \
 	--program-suffix=-sdl \
-	--with-bash-completion-dir=%{bash_compdir} \
 	--with-sdl
 %{__make}
 cd ..
@@ -300,8 +302,8 @@ cd ..
 mkdir build-svga
 cd build-svga
 ../%configure \
+	%{common_opts} \
 	--program-suffix=-svga \
-	--with-bash-completion-dir=%{bash_compdir} \
 	--with-svgalib
 %{__make}
 cd ..
@@ -312,8 +314,8 @@ cd ..
 mkdir build-fb
 cd build-fb
 ../%configure \
+	%{common_opts} \
 	--program-suffix=-fb \
-	--with-bash-completion-dir=%{bash_compdir} \
 %if %{with libao}
 	--without-alsa \
 	--with-libao \
@@ -328,8 +330,8 @@ cd ..
 mkdir build-gtk2
 cd build-gtk2
 ../%configure  \
+	%{common_opts} \
 	--program-suffix=-gtk \
-	--with-bash-completion-dir=%{bash_compdir} \
 %if %{with libao}
 	--without-alsa \
 	--with-libao \
@@ -344,9 +346,9 @@ cd ..
 mkdir build-gtk3
 cd build-gtk3
 ../%configure  \
+	%{common_opts} \
 	--enable-gtk3 \
 	--program-suffix=-gtk3 \
-	--with-bash-completion-dir=%{bash_compdir} \
 %if %{with libao}
 	--without-alsa \
 	--with-libao \
