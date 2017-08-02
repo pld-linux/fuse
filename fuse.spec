@@ -7,15 +7,16 @@
 %bcond_without	sdl	# SDL version
 %bcond_without	libao	# libao instead of alsa
 #
+%define		libspectrumver	1.3.6
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.3.7
+Version:	1.3.8
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	b3f08c88c002c53fb7f4a20e7c177aa0
+# Source0-md5:	278bb7d77360be3cdc839276217a584d
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 Patch0:		%{name}-1.1.1-2.patch
@@ -33,7 +34,7 @@ BuildRequires:	libjsw-devel
 BuildRequires:	libmount-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= 1.3.5
+BuildRequires:	libspectrum-devel >= %{libspectrumver}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 2.0.0
 BuildRequires:	perl-base
@@ -71,7 +72,7 @@ Summary:	Free Unix Spectrum Emulator (common files)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
 Requires:	glib2 >= 1:2.20.0
-Requires:	libspectrum >= 1.3.5
+Requires:	libspectrum >= %{libspectrumver}
 Suggests:	fdd3000e
 
 %description common
@@ -392,7 +393,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files common
 %defattr(644,root,root,755)
-%doc README THANKS AUTHORS keysyms.dat keysyms.pl hacking/*.txt
+%doc README THANKS AUTHORS ChangeLog keysyms.dat keysyms.pl hacking/*.txt
 %{_datadir}/%{name}
 
 %if %{with fb}
