@@ -7,16 +7,16 @@
 %bcond_without	sdl	# SDL version
 %bcond_without	libao	# libao instead of alsa
 #
-%define		libspectrumver	1.4.1
+%define		libspectrumver	1.4.2
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.5.2
+Version:	1.5.3
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	eedf11fd95f11d5d31aa09a2614e7452
+# Source0-md5:	8bbee33be6725ee86e8ab1a6b535326a
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 URL:		http://fuse-emulator.sourceforge.net/
