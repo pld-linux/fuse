@@ -7,35 +7,33 @@
 %bcond_without	sdl	# SDL version
 %bcond_without	libao	# libao instead of alsa
 #
-%define		libspectrumver	1.4.2
+%define		libspectrum_ver	1.4.2
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.5.3
+Version:	1.5.5
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	8bbee33be6725ee86e8ab1a6b535326a
+# Source0-md5:	21c834410534bcb926e98f5d4ef4c039
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf >= 2.59-9
-BuildRequires:	automake
+BuildRequires:	automake >= 1:1.11
 BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
 %{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.18.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_libao:BuildRequires:	libao-devel}
 BuildRequires:	libjsw-devel
-BuildRequires:	libmount-devel
 BuildRequires:	libpng-devel
-BuildRequires:	libsamplerate-devel
-BuildRequires:	libspectrum-devel >= %{libspectrumver}
+BuildRequires:	libspectrum-devel >= %{libspectrum_ver}
 BuildRequires:	libtool >= 2:2
-BuildRequires:	libxml2-devel >= 2.0.0
+BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.697
@@ -70,8 +68,10 @@ Jego właściwości to:
 Summary:	Free Unix Spectrum Emulator (common files)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (pliki wspólne)
 Group:		Applications/Emulators
+# actually -common doesn't require these libraries, but all the frontends do
 Requires:	glib2 >= 1:2.20.0
-Requires:	libspectrum >= %{libspectrumver}
+Requires:	libspectrum >= %{libspectrum_ver}
+Requires:	libxml2-devel >= 1:2.6.0
 Suggests:	fdd3000e
 
 %description common
