@@ -7,16 +7,16 @@
 %bcond_without	sdl	# SDL version
 %bcond_without	libao	# libao instead of alsa
 #
-%define		libspectrum_ver	1.4.4
+%define		libspectrum_ver	1.5.0
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.5.7
+Version:	1.6.0
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	d9c9085635726ae4fdbe2c40d82de695
+# Source0-md5:	393ae137e76de66e6a1bf66959a39e99
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 URL:		http://fuse-emulator.sourceforge.net/
@@ -315,8 +315,7 @@ cd build-fb
 	%{common_opts} \
 	--program-suffix=-fb \
 %if %{with libao}
-	--without-alsa \
-	--with-libao \
+	--with-audio-driver=libao \
 %endif
 	--with-fb
 %{__make}
@@ -331,8 +330,7 @@ cd build-gtk2
 	%{common_opts} \
 	--program-suffix=-gtk \
 %if %{with libao}
-	--without-alsa \
-	--with-libao \
+	--with-audio-driver=libao \
 %endif
 	--with-gtk
 %{__make}
@@ -348,8 +346,7 @@ cd build-gtk3
 	--enable-gtk3 \
 	--program-suffix=-gtk3 \
 %if %{with libao}
-	--without-alsa \
-	--with-libao \
+	--with-audio-driver=libao \
 %endif
 	--with-gtk
 %{__make}
