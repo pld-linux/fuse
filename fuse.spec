@@ -12,13 +12,15 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.6.0
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	393ae137e76de66e6a1bf66959a39e99
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
+Patch0:		http://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.6.0-fdd3000-0.2.1.diff
+# Patch0-md5:	4a75f5c445921feb2c12a8406f71c44e
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
@@ -274,11 +276,15 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
+%{__rm} -f settings.c settings.h options.h
 
 %build
+autoreconf
+
 %define	common_opts \\\
 	--disable-silent-rules \\\
 	--with-bash-completion-dir=%{bash_compdir} \\\
