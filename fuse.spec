@@ -276,7 +276,7 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
