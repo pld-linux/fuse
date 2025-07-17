@@ -12,7 +12,7 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.6.0
-Release:	6
+Release:	7
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
@@ -293,7 +293,8 @@ autoreconf
 %if %{with sdl}
 mkdir build-sdl
 cd build-sdl
-../%configure \
+%define configuredir ..
+%configure \
 	%{common_opts} \
 	--program-suffix=-sdl \
 	--with-sdl
@@ -305,7 +306,8 @@ cd ..
 %if %{with svga}
 mkdir build-svga
 cd build-svga
-../%configure \
+%define configuredir ..
+%configure \
 	%{common_opts} \
 	--program-suffix=-svga \
 	--with-svgalib
@@ -317,7 +319,8 @@ cd ..
 %if %{with fb}
 mkdir build-fb
 cd build-fb
-../%configure \
+%define configuredir ..
+%configure \
 	%{common_opts} \
 	--program-suffix=-fb \
 %if %{with libao}
@@ -332,7 +335,8 @@ cd ..
 %if %{with gtk2}
 mkdir build-gtk2
 cd build-gtk2
-../%configure  \
+%define configuredir ..
+%configure  \
 	%{common_opts} \
 	--program-suffix=-gtk \
 %if %{with libao}
@@ -347,7 +351,8 @@ cd ..
 %if %{with gtk3}
 mkdir build-gtk3
 cd build-gtk3
-../%configure  \
+%define configuredir ..
+%configure  \
 	%{common_opts} \
 	--enable-gtk3 \
 	--program-suffix=-gtk3 \
