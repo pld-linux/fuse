@@ -38,7 +38,7 @@ BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.697
+BuildRequires:	rpmbuild(macros) >= 2.043
 BuildRequires:	sed >= 4.0
 %{?with_svga:BuildRequires:	svgalib-devel}
 BuildRequires:	xorg-lib-libX11-devel
