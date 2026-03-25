@@ -11,16 +11,16 @@
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.6.0
-Release:	7
+Version:	1.7.0
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	393ae137e76de66e6a1bf66959a39e99
+# Source0-md5:	52dbb29542636ef349710ac6e2159400
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
-Patch0:		http://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.6.0-fdd3000-0.2.1.diff
-# Patch0-md5:	4a75f5c445921feb2c12a8406f71c44e
+Patch0:		http://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.7.0-fdd3000-0.2.1.diff
+# Patch0-md5:	e487fac131519a33446341006bf4cb5d
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
@@ -202,7 +202,7 @@ Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 2)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	gtk+2 >= 2:2.18.0
-Obsoletes:	fuse-X11
+Obsoletes:	fuse-X11 < 1.7.0
 
 %description gtk
 fuse is Free Unix Spectrum Emulator.
@@ -234,7 +234,7 @@ Summary:	Free Unix Spectrum Emulator (GTK+ 3 version)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 3)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
-Obsoletes:	fuse-X11
+Obsoletes:	fuse-X11 < 1.7.0
 
 %description gtk3
 fuse is Free Unix Spectrum Emulator.
