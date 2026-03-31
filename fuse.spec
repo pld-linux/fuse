@@ -7,7 +7,7 @@
 %bcond_without	sdl	# SDL version
 %bcond_without	libao	# libao instead of alsa
 #
-%define		libspectrum_ver	1.5.0
+%define		libspectrum_ver	1.6.0
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
