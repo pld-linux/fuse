@@ -46,8 +46,7 @@ BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -58,8 +57,8 @@ What Fuse does have:
 * Emulation of several printers for ZX Spectrum.
 
 %description -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -76,8 +75,7 @@ Requires:	libspectrum >= %{libspectrum_ver}
 Requires:	libxml2-devel >= 1:2.6.0
 
 %description common
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -90,8 +88,8 @@ What Fuse does have:
 This package contains common files for all versions.
 
 %description common -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -107,8 +105,7 @@ Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
 %description fb
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -121,8 +118,8 @@ What Fuse does have:
 This package contains files for framebuffer version.
 
 %description fb -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -140,8 +137,7 @@ Requires:	%{name}-common = %{version}-%{release}
 Requires:	SDL >= 1.2.4
 
 %description sdl
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -154,8 +150,8 @@ What Fuse does have:
 This package contains files for SDL version.
 
 %description sdl -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -172,8 +168,7 @@ Requires:	%{name}-common = %{version}-%{release}
 Requires:	SDL2 >= 2.0
 
 %description sdl2
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -186,8 +181,8 @@ What Fuse does have:
 This package contains files for SDL2 version.
 
 %description sdl2 -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -196,7 +191,6 @@ Jego właściwości to:
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL2.
 
-
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na svgalib)
@@ -204,8 +198,7 @@ Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 
 %description svga
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -218,8 +211,8 @@ What Fuse does have:
 This package contains files for svga version.
 
 %description svga -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
@@ -228,49 +221,16 @@ Jego właściwości to:
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z svgalib.
 
-%package gtk
-Summary:	Free Unix Spectrum Emulator (GTK+ 2 version)
-Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 2)
-Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}-%{release}
-Requires:	gtk+2 >= 2:2.18.0
-Obsoletes:	fuse-X11 < 1.7.0
-
-%description gtk
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
-
-* Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
-  speed on any computer you're likely to try it on (it runs at full
-  speed on a SparcStation 4 unless you do too much graphics intensive
-  stuff).
-* Support for loading from .tzx files.
-* Sound emulation.
-* Emulation of several printers for ZX Spectrum.
-
-This package contains files for GTK+ 2 version.
-
-%description gtk -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
-
-* Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Możliwość ładowania programów z plików .tzx.
-* Dźwięk.
-* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
-
-W tym pakiecie znajdują się pliki dla wersji GTK+ 2.
-
 %package gtk3
 Summary:	Free Unix Spectrum Emulator (GTK+ 3 version)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja GTK+ 3)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 Obsoletes:	fuse-X11 < 1.7.0
+Obsoletes:	fuse-gtk < 1.8.0
 
 %description gtk3
-fuse is Free Unix Spectrum Emulator.
-What Fuse does have:
+fuse is Free Unix Spectrum Emulator. What Fuse does have:
 
 * Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
   speed on any computer you're likely to try it on (it runs at full
@@ -283,8 +243,8 @@ What Fuse does have:
 This package contains files for GTK+ 3 version.
 
 %description gtk3 -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
-Jego właściwości to:
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
+właściwości to:
 
 * Emulacja ZX Spectrum 48K/128K/+2/+2A.
 * Możliwość ładowania programów z plików .tzx.
