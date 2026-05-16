@@ -2,33 +2,33 @@
 # Conditional build:
 %bcond_with	svga	# svgalib version
 %bcond_without	fb	# framebuffer version
-%bcond_without	gtk2	# GTK+ 2 version
 %bcond_without	gtk3	# GTK+ 3 version
 %bcond_without	sdl	# SDL version
+%bcond_without	sdl2	# SDL2 version
 %bcond_without	libao	# libao instead of alsa
 #
-%define		libspectrum_ver	1.6.0
+%define		libspectrum_ver	1.6.1
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.7.0
+Version:	1.8.0
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	52dbb29542636ef349710ac6e2159400
+# Source0-md5:	32a9d53b8e62dadc712862ab9b629049
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
 Patch0:		http://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.7.0-fdd3000-0.2.1.diff
 # Patch0-md5:	e487fac131519a33446341006bf4cb5d
 URL:		http://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
+%{?with_sdl2:BuildRequires:	SDL2-devel}
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
-%{?with_gtk2:BuildRequires:	gtk+2-devel >= 2:2.18.0}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_libao:BuildRequires:	libao-devel}
 BuildRequires:	libjsw-devel
@@ -74,7 +74,6 @@ Group:		Applications/Emulators
 Requires:	glib2 >= 1:2.20.0
 Requires:	libspectrum >= %{libspectrum_ver}
 Requires:	libxml2-devel >= 1:2.6.0
-Suggests:	fdd3000e
 
 %description common
 fuse is Free Unix Spectrum Emulator.
@@ -164,6 +163,39 @@ Jego właściwości to:
 * Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
 
 W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL.
+
+%package sdl2
+Summary:	Free Unix Spectrum Emulator (SDL2 version)
+Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL2)
+Group:		Applications/Emulators
+Requires:	%{name}-common = %{version}-%{release}
+Requires:	SDL2 >= 2.0
+
+%description sdl2
+fuse is Free Unix Spectrum Emulator.
+What Fuse does have:
+
+* Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
+  speed on any computer you're likely to try it on (it runs at full
+  speed on a SparcStation 4 unless you do too much graphics intensive
+  stuff).
+* Support for loading from .tzx files.
+* Sound emulation.
+* Emulation of several printers for ZX Spectrum.
+
+This package contains files for SDL2 version.
+
+%description sdl2 -l pl.UTF-8
+fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum.
+Jego właściwości to:
+
+* Emulacja ZX Spectrum 48K/128K/+2/+2A.
+* Możliwość ładowania programów z plików .tzx.
+* Dźwięk.
+* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
+
+W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL2.
+
 
 %package svga
 Summary:	Free Unix Spectrum Emulator (svga version)
@@ -279,8 +311,8 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %patch -P0 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
-%{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
-%{__rm} -f settings.c settings.h options.h
+%{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
+%{__rm} -f settings.c settings.h options.h ui/gtk3/menu_data.ui
 
 %build
 autoreconf
@@ -298,6 +330,19 @@ cd build-sdl
 	%{common_opts} \
 	--program-suffix=-sdl \
 	--with-sdl
+%{__make}
+cd ..
+%endif
+
+# SDL2
+%if %{with sdl2}
+mkdir build-sdl2
+cd build-sdl2
+%define configuredir ..
+%configure \
+	%{common_opts} \
+	--program-suffix=-sdl2 \
+	--with-sdl2
 %{__make}
 cd ..
 %endif
@@ -331,22 +376,6 @@ cd build-fb
 cd ..
 %endif
 
-# gtk
-%if %{with gtk2}
-mkdir build-gtk2
-cd build-gtk2
-%define configuredir ..
-%configure  \
-	%{common_opts} \
-	--program-suffix=-gtk \
-%if %{with libao}
-	--with-audio-driver=libao \
-%endif
-	--with-gtk
-%{__make}
-cd ..
-%endif
-
 # gtk3
 %if %{with gtk3}
 mkdir build-gtk3
@@ -371,6 +400,11 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
+%if %{with sdl2}
+%{__make} -C build-sdl2 install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
 %if %{with svga}
 %{__make} -C build-svga install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -378,11 +412,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with fb}
 %{__make} -C build-fb install \
-	DESTDIR=$RPM_BUILD_ROOT
-%endif
-
-%if %{with gtk2}
-%{__make} -C build-gtk2 install \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
 
@@ -408,13 +437,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/fuse-fb.1*
 %endif
 
-%if %{with gtk2}
-%files gtk
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/fuse-gtk
-%{_mandir}/man1/fuse-gtk.1*
-%endif
-
 %if %{with gtk3}
 %files gtk3
 %defattr(644,root,root,755)
@@ -427,6 +449,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-sdl
 %{_mandir}/man1/fuse-sdl.1*
+%endif
+
+%if %{with sdl2}
+%files sdl2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fuse-sdl2
+%{_mandir}/man1/fuse-sdl2.1*
 %endif
 
 %if %{with svga}
