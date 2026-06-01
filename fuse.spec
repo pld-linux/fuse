@@ -31,7 +31,6 @@ BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_libao:BuildRequires:	libao-devel}
-BuildRequires:	libjsw-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= %{libspectrum_ver}
 BuildRequires:	libtool >= 2:2
