@@ -1,11 +1,12 @@
 #
 # Conditional build:
-%bcond_with	svga	# svgalib version
-%bcond_without	fb	# framebuffer version
-%bcond_without	gtk3	# GTK+ 3 version
-%bcond_without	sdl	# SDL version
-%bcond_without	sdl2	# SDL2 version
+%bcond_with	svga	# svgalib UI
+%bcond_without	fb	# framebuffer UI
+%bcond_without	gtk3	# GTK+ 3 UI
+%bcond_without	sdl	# SDL UI
+%bcond_without	sdl2	# SDL2 UI
 %bcond_without	libao	# libao instead of alsa
+%bcond_with	libjsw	# hardware joystick support via libjsw in svga and fb UIs
 #
 %define		libspectrum_ver	1.6.1
 Summary:	Free Unix Spectrum Emulator
@@ -31,6 +32,7 @@ BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_libao:BuildRequires:	libao-devel}
+%{?with_libjsw:BuildRequires:	libjsw-devel}
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= %{libspectrum_ver}
 BuildRequires:	libtool >= 2:2
@@ -274,9 +276,14 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %{__rm} -f settings.c settings.h options.h ui/gtk3/menu_data.ui
 
 %build
-autoreconf
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 
 %define	common_opts \\\
+	%{!?with_libjsw:ac_cv_header_jsw_h=no} \\\
 	--disable-silent-rules \\\
 	--with-bash-completion-dir=%{bash_compdir} \\\
 	%{nil}
