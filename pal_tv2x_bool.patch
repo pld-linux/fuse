@@ -1,0 +1,12 @@
+diff -up fuse-1.9.0/settings.dat.old fuse-1.9.0/settings.dat
+--- fuse-1.9.0/settings.dat.old	2026-06-15 14:09:39.000000000 +0200
++++ fuse-1.9.0/settings.dat	2026-06-20 14:25:52.589721106 +0200
+@@ -68,7 +68,7 @@ multiface3, boolean, 0
+ multiface1_stealth, boolean, 0
+ snapsasz80, null, 0
+ opus, boolean, 0
+-pal_tv2x, null, 0
++pal_tv2x, boolean, 0
+ movie_compr, string, NULL
+ movie_start, string, NULL
+ movie_stop_after_rzx, boolean, 1

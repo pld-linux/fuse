@@ -5,24 +5,26 @@
 %bcond_without	gtk3	# GTK+ 3 UI
 %bcond_without	sdl	# SDL UI
 %bcond_without	sdl2	# SDL2 UI
-%bcond_without	libao	# libao instead of alsa
-%bcond_with	libjsw	# hardware joystick support via libjsw in svga and fb UIs
+%bcond_with	libao	# libao instead of alsa
+%bcond_without	pulseaudio	# pulseaudio
 #
-%define		libspectrum_ver	1.6.1
+%define		libspectrum_ver	1.6.2
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.8.0
+Version:	1.9.0
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
-Source0:	http://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	32a9d53b8e62dadc712862ab9b629049
+Source0:	https://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
+# Source0-md5:	f2e85959219c15b3577b1385fd086799
 Source1:	ti_m397.rom
 # Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
-Patch0:		http://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.7.0-fdd3000-0.2.1.diff
-# Patch0-md5:	e487fac131519a33446341006bf4cb5d
-URL:		http://fuse-emulator.sourceforge.net/
+Patch0:		pal_tv2x_bool.patch
+Patch1:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.7.0-fdd3000-0.2.1.diff
+# Patch1-md5:	e487fac131519a33446341006bf4cb5d
+Patch2:		pal_tv2x_null.patch
+URL:		https://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{?with_sdl2:BuildRequires:	SDL2-devel}
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
@@ -32,13 +34,13 @@ BuildRequires:	glib2-devel >= 1:2.20.0
 %{?with_fb:BuildRequires:	gpm-devel}
 %{?with_gtk3:BuildRequires:	gtk+3-devel >= 3.0}
 %{?with_libao:BuildRequires:	libao-devel}
-%{?with_libjsw:BuildRequires:	libjsw-devel}
 BuildRequires:	libpng-devel
 BuildRequires:	libspectrum-devel >= %{libspectrum_ver}
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libxml2-devel >= 1:2.6.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
+%{?with_pulseadio:BuildRequires:	pulseaudio-devel}
 BuildRequires:	rpmbuild(macros) >= 2.043
 BuildRequires:	sed >= 4.0
 %{?with_svga:BuildRequires:	svgalib-devel}
@@ -270,6 +272,8 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %prep
 %setup -q
 %patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
@@ -283,7 +287,6 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %{__automake}
 
 %define	common_opts \\\
-	%{!?with_libjsw:ac_cv_header_jsw_h=no} \\\
 	--disable-silent-rules \\\
 	--with-bash-completion-dir=%{bash_compdir} \\\
 	%{nil}
@@ -337,6 +340,9 @@ cd build-fb
 %if %{with libao}
 	--with-audio-driver=libao \
 %endif
+%if %{with pulseaudio}
+	--with-audio-driver=pulseaudio \
+%endif
 	--with-fb
 %{__make}
 cd ..
@@ -353,6 +359,9 @@ cd build-gtk3
 	--program-suffix=-gtk3 \
 %if %{with libao}
 	--with-audio-driver=libao \
+%endif
+%if %{with pulseaudio}
+	--with-audio-driver=pulseaudio \
 %endif
 	--with-gtk
 %{__make}
