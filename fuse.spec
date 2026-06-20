@@ -1,12 +1,12 @@
 #
 # Conditional build:
-%bcond_with	svga	# svgalib UI
-%bcond_without	fb	# framebuffer UI
-%bcond_without	gtk3	# GTK+ 3 UI
-%bcond_without	sdl	# SDL UI
-%bcond_without	sdl2	# SDL2 UI
-%bcond_with	libao	# libao instead of alsa
-%bcond_without	pulseaudio	# pulseaudio
+%bcond_with	svga		# svgalib UI
+%bcond_without	fb		# framebuffer UI
+%bcond_without	gtk3		# GTK+ 3 UI
+%bcond_without	sdl		# SDL UI
+%bcond_without	sdl2		# SDL2 UI
+%bcond_with	libao		# libao instead of alsa in fb/gtk UIs
+%bcond_without	pulseaudio	# pulseaudio instead of alsa in fb/gtk UIs
 #
 %define		libspectrum_ver	1.6.2
 Summary:	Free Unix Spectrum Emulator
