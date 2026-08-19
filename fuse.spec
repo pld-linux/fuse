@@ -13,17 +13,13 @@ Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
 Version:	1.9.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	https://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
 # Source0-md5:	ca7d86adc18c7cbdbcf6488e4439fb4b
-Source1:	ti_m397.rom
-# Source1-md5:	8c61b20e1f7666ff80ad7f48bb2b10c0
-Patch0:		pal_tv2x_bool.patch
-Patch1:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.7.0-fdd3000-0.2.1.diff
-# Patch1-md5:	e487fac131519a33446341006bf4cb5d
-Patch2:		pal_tv2x_null.patch
+Patch0:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.9.1-fdd3000-0.2.1.diff
+# Patch0-md5:	dec67d8c25c788a3a01c0fdb3a6e65fd
 URL:		https://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{?with_sdl2:BuildRequires:	SDL2-devel}
@@ -272,8 +268,6 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %prep
 %setup -q
 %patch -P0 -p1
-%patch -P1 -p1
-%patch -P2 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
 %{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
@@ -394,8 +388,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build-gtk3 install \
 	DESTDIR=$RPM_BUILD_ROOT
 %endif
-
-cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
