@@ -8,18 +8,18 @@
 %bcond_with	libao		# libao instead of alsa in fb/gtk UIs
 %bcond_without	pulseaudio	# pulseaudio instead of alsa in fb/gtk UIs
 #
-%define		libspectrum_ver	1.6.3
+%define		libspectrum_ver	1.6.4
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.9.1
-Release:	2
+Version:	1.9.2
+Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	https://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	ca7d86adc18c7cbdbcf6488e4439fb4b
-Patch0:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.9.1-fdd3000-0.2.1.diff
-# Patch0-md5:	dec67d8c25c788a3a01c0fdb3a6e65fd
+# Source0-md5:	12cb6dba79bfd95100b6df8feece2769
+Patch0:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.9.2-fdd3000-0.2.1.diff
+# Patch0-md5:	9f4ec0e74279f88c1d33412358b9bbd7
 URL:		https://fuse-emulator.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.4
 %{?with_sdl2:BuildRequires:	SDL2-devel}
