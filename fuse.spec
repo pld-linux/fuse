@@ -3,25 +3,23 @@
 %bcond_with	svga		# svgalib UI
 %bcond_without	fb		# framebuffer UI
 %bcond_without	gtk3		# GTK+ 3 UI
-%bcond_without	sdl		# SDL UI
 %bcond_without	sdl2		# SDL2 UI
 %bcond_with	libao		# libao instead of alsa in fb/gtk UIs
 %bcond_without	pulseaudio	# pulseaudio instead of alsa in fb/gtk UIs
 #
-%define		libspectrum_ver	1.7.0
+%define		libspectrum_ver	1.8.0
 Summary:	Free Unix Spectrum Emulator
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum
 Name:		fuse
-Version:	1.10.0
+Version:	1.10.1
 Release:	1
 License:	GPL v2+
 Group:		Applications/Emulators
 Source0:	https://downloads.sourceforge.net/fuse-emulator/%{name}-%{version}.tar.gz
-# Source0-md5:	1d792a6691e5ea228b8440a0783cfbaa
-Patch0:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/fuse-1.10.0-fdd3000-0.2.1.1.diff
-# Patch0-md5:	12a2dbe63663669e31c629e0fb7129d7
+# Source0-md5:	f1f44793263dc15660df6873513cf76e
+Patch0:		https://downloads.sourceforge.net/fdd3000e/v_0.2.1/%{name}-%{version}-fdd3000-0.2.1.1.diff
+# Patch0-md5:	a95163b3a6062a13375d2e2fe0b64801
 URL:		https://fuse-emulator.sourceforge.net/
-BuildRequires:	SDL-devel >= 1.2.4
 %{?with_sdl2:BuildRequires:	SDL2-devel}
 %{!?with_libao:BuildRequires:	alsa-lib-devel}
 BuildRequires:	autoconf >= 2.59-9
@@ -128,43 +126,13 @@ właściwości to:
 W tym pakiecie znajdują się pliki dla wersji korzystającej z
 framebuffera.
 
-%package sdl
-Summary:	Free Unix Spectrum Emulator (SDL version)
-Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL)
-Group:		Applications/Emulators
-Requires:	%{name}-common = %{version}-%{release}
-Requires:	SDL >= 1.2.4
-
-%description sdl
-fuse is Free Unix Spectrum Emulator. What Fuse does have:
-
-* Working 48K/128K/+2/+2A Speccy emulation, running at true Speccy
-  speed on any computer you're likely to try it on (it runs at full
-  speed on a SparcStation 4 unless you do too much graphics intensive
-  stuff).
-* Support for loading from .tzx files.
-* Sound emulation.
-* Emulation of several printers for ZX Spectrum.
-
-This package contains files for SDL version.
-
-%description sdl -l pl.UTF-8
-fuse (Free Unix Spectrum Emulator) jest emulatorem ZX Spectrum. Jego
-właściwości to:
-
-* Emulacja ZX Spectrum 48K/128K/+2/+2A.
-* Możliwość ładowania programów z plików .tzx.
-* Dźwięk.
-* Emulacja kilku drukarek przeznaczonych dla ZX Spectrum.
-
-W tym pakiecie znajdują się pliki dla wersji korzystającej z SDL.
-
 %package sdl2
 Summary:	Free Unix Spectrum Emulator (SDL2 version)
 Summary(pl.UTF-8):	Darmowy uniksowy emulator ZX Spectrum (wersja na SDL2)
 Group:		Applications/Emulators
 Requires:	%{name}-common = %{version}-%{release}
 Requires:	SDL2 >= 2.0
+Obsoletes:	fuse-sdl < 1.10.1
 
 %description sdl2
 fuse is Free Unix Spectrum Emulator. What Fuse does have:
@@ -270,7 +238,7 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 %patch -P0 -p1
 
 # PLD uses per-backend fuse program instead of just "fuse"
-%{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk3 fuse-sdl fuse-svga/' data/shell-completion/bash/fuse
+%{__sed} -i -e '/^complete /s/ fuse$/ fuse-fb fuse-gtk3 fuse-sdl2 fuse-svga/' data/shell-completion/bash/fuse
 %{__rm} -f settings.c settings.h options.h ui/gtk3/menu_data.ui
 
 %build
@@ -284,18 +252,6 @@ Bashowe dopełnianie składni poleceń emulatora FUSE.
 	--disable-silent-rules \\\
 	--with-bash-completion-dir=%{bash_compdir} \\\
 	%{nil}
-# SDL
-%if %{with sdl}
-mkdir build-sdl
-cd build-sdl
-%define configuredir ..
-%configure \
-	%{common_opts} \
-	--program-suffix=-sdl \
-	--with-sdl
-%{__make}
-cd ..
-%endif
 
 # SDL2
 %if %{with sdl2}
@@ -364,10 +320,6 @@ cd ..
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%if %{with sdl}
-%{__make} -C build-sdl install \
-	DESTDIR=$RPM_BUILD_ROOT
-%endif
 
 %if %{with sdl2}
 %{__make} -C build-sdl2 install \
@@ -409,13 +361,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fuse-gtk3
 %{_mandir}/man1/fuse-gtk3.1*
-%endif
-
-%if %{with sdl}
-%files sdl
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/fuse-sdl
-%{_mandir}/man1/fuse-sdl.1*
 %endif
 
 %if %{with sdl2}
